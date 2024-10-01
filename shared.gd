@@ -80,40 +80,41 @@ func get_candy(candy: Candy, level: CandyLevel = CandyLevel.FUN_SIZE):
 	var candy_base = { "type": candy, "level": level }
 	match (candy):
 		Candy.REESES:
-			add_candy_details(candy_base, 5)
+			add_candy_details(candy_base, 5, "res://art/candy/reeses_fun.png")
 		Candy.TWIX:
-			add_candy_details(candy_base, 4)
+			add_candy_details(candy_base, 4, "res://art/candy/twix_fun.png")
 		Candy.HERSHEY_BAR:
-			add_candy_details(candy_base, 4)
+			add_candy_details(candy_base, 4, "res://art/candy/hershey_fun.png")
 		Candy.KITKAT:
-			add_candy_details(candy_base, 3)
+			add_candy_details(candy_base, 3, "res://art/candy/kitkat_fun.png")
 		Candy.CRUNCH:
-			add_candy_details(candy_base, 2)
+			add_candy_details(candy_base, 2, "res://art/candy/crunch_fun.png")
 		Candy.LIFESAVERS:
-			add_candy_details(candy_base, -5)
+			add_candy_details(candy_base, -5, "res://art/candy/lifesavers_fun.png")
 		Candy.WERTHERS:
-			add_candy_details(candy_base, -4)
+			add_candy_details(candy_base, -4, "res://art/candy/werthers_fun.png")
 		Candy.APPLE:
-			add_candy_details(candy_base, -4)
+			add_candy_details(candy_base, -4, "res://art/candy/apple_fun.png")
 		Candy.HEATH:
-			add_candy_details(candy_base, -3)
+			add_candy_details(candy_base, -3, "res://art/candy/heath_fun.png")
 		Candy.FRUIT_GUMMIES:
-			add_candy_details(candy_base, -2)
+			add_candy_details(candy_base, -2, "res://art/candy/fruit_gummies_fun.png")
 		Candy.ROCK:
-			add_candy_details(candy_base, 5)
+			add_candy_details(candy_base, 5, "res://art/candy/rock_fun.png")
 		Candy.NOW_AND_LATER:
-			add_candy_details(candy_base, 4)
+			add_candy_details(candy_base, 4, "res://art/candy/now_and_later_fun.png")
 		Candy.SWEDISH_FISH:
-			add_candy_details(candy_base, 3)
+			add_candy_details(candy_base, 3, "res://art/candy/swedish_fish_fun.png")
 		Candy.GUMMY_BEARS:
-			add_candy_details(candy_base, 0)
+			add_candy_details(candy_base, 0, "res://art/candy/gummy_bears_fun.png")
 		Candy.NERDS_ROPE:
-			add_candy_details(candy_base, 0)
+			add_candy_details(candy_base, 0, "res://art/candy/nerds_rope_fun.png")
 			
 	return CandyClass.new(candy_base)
 
-func add_candy_details(base: Dictionary, yum: int):
+func add_candy_details(base: Dictionary, yum: int, texture_path: String):
 	base['yum'] = yum
+	base['texture_path'] = texture_path
 
 func get_random_candy():
 	var enum_size = Candy.size()

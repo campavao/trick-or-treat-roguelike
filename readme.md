@@ -22,6 +22,8 @@ Created for the 2024 Chicaghoul Jam - https://itch.io/jam/chicaghoul-2024
          1. Like Normal house, but harder
       2. Elite Treat
          1. Like Normal house, but more extreme
+   4. Your house
+      1. There is one opportunity to stop by home to drop off candy
 3. Reach the end of the neighborhood and go to Boss House
    1. Disgruntled Adult Boss
    2. Triggered after you take more than 1 piece of candy from an unattended basket
@@ -101,14 +103,16 @@ If you successfully complete the encounter, you'll be granted the opportunity to
   - Party size - 10%
 
 #### Candy upgrade
-You can upgrade candy if you have 2 of a kind with Party size being the max
+You can only upgrade candy at a friend's house.
 
 ## Treat
 TODO
 ## Friend's House
-Can either rest to restore health or choose more candy with the chance to upgrade
+Can either rest to restore health, upgrade one of your candy bars, or remove some candy
 ## Boss
 TODO
+## Your house
+You can drop off as much candy as you want at your house, but you must have at least 1 going forward
 
 ## Assets Needed
 ### Art

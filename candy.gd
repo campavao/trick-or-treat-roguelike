@@ -8,6 +8,7 @@ var type: Candy # e.g. CRUNCH
 var level: Shared.CandyLevel # e.g. King Size
 var candy_name: String # Readable name
 var yum: int # if positive it's tasty, if negative it's healthy
+var texture_path: String
 
 func _init(props):
 	type = props['type'] if props['type'] else Candy.CRUNCH
@@ -15,6 +16,7 @@ func _init(props):
 	yum = props['yum']
 	name = Shared.get_candy_name(type) # this should update the node's name in the tree
 	candy_name = Shared.get_candy_name(type)
+	texture_path = props['texture_path']
 
 func use(target: Node, all_targets: Array[Node]):
 	# Eat the candy
@@ -61,10 +63,17 @@ func get_random_target(all_targets: Array[Node], ignore_targets: Array[Node]) ->
 	return valid_targets.pick_random()
 
 func level_up():
+	var path_parts = texture_path.split("/")
+
 	match level:
 		Level.FUN_SIZE:
 			level = Level.REGULAR_SIZE
+			path_parts[3] = path_parts[3].replace("_fun", "_regular")
 		Level.REGULAR_SIZE:
 			level = Level.KING_SIZE
+			path_parts[3] = path_parts[3].replace("_regular", "_king")
 		Level.KING_SIZE:
 			level = Level.PARTY_SIZE
+			path_parts[3] = path_parts[3].replace("_king", "_party")
+
+	texture_path = path_parts.join("/")

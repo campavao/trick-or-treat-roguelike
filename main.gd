@@ -2,10 +2,10 @@ extends Node2D
 
 const Characters = Shared.Characters
 
-var state: GameState
+var state: Player
 
 func _on_start_character_select(character: Characters) -> void:
-	state = GameState.new({ "character": character })
+	state = Player.new({ "character": character })
 	$CharacterName.text = Shared.get_character_name(character)
 	$"First Neighborhood".start()
 
