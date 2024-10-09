@@ -120,6 +120,18 @@ func get_random_candy():
 	var enum_size = Candy.size()
 	var random_index = int(randf() * enum_size)  # randf() gives a float in the range [0.0, 1.0)
 	return get_candy(random_index)
+	
+	
+const FALLBACK_IMAGE = preload('res://art/candy/reeses_fun.png')
+
+func get_candy_texture(path: String):
+	var texture = load(path)
+	
+	if texture == null:
+		print("No image found for: ", path)
+		texture = FALLBACK_IMAGE
+		
+	return texture
 
 ### House ######################################################################
 

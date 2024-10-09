@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dq0xeb67ygqvi"]
+[gd_scene load_steps=5 format=3 uid="uid://dq0xeb67ygqvi"]
 
 [ext_resource type="Script" path="res://trick.gd" id="1_3sljv"]
 [ext_resource type="PackedScene" uid="uid://c4vi1t5xc3hty" path="res://player.tscn" id="2_a3fo8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e0l03"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8cu33"]
 
 [node name="Trick" type="Node2D"]
 script = ExtResource("1_3sljv")
@@ -37,15 +41,23 @@ offset_right = 1121.0
 offset_bottom = 375.0
 theme_override_constants/separation = 96
 
-[node name="CandyContainer" type="HBoxContainer" parent="."]
+[node name="CandyContainer" type="ItemList" parent="."]
 custom_minimum_size = Vector2(64, 0)
-offset_left = 116.0
-offset_top = 533.0
-offset_right = 554.0
-offset_bottom = 572.0
-scale = Vector2(2, 2)
-theme_override_constants/separation = 32
-alignment = 1
+offset_left = 101.0
+offset_top = 491.0
+offset_right = 941.0
+offset_bottom = 624.0
+theme_override_constants/h_separation = 22
+theme_override_font_sizes/font_size = 8
+theme_override_styles/focus = SubResource("StyleBoxEmpty_e0l03")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_8cu33")
+allow_search = false
+max_text_lines = 2
+text_overrun_behavior = 0
+max_columns = 8
+same_column_width = true
+icon_mode = 0
+icon_scale = 1.5
 
 [connection signal="pressed" from="Complete Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Done" to="." method="_on_done_pressed"]

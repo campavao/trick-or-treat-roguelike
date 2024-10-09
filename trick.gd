@@ -7,6 +7,8 @@ const ENEMY_SCENE = preload('res://enemy.tscn')
 var player_ref: Player
 var basket_ref: Array[CandyClass]
 
+var selected_candy: CandyClass
+
 func enable(player: Player, type: Shared.HOUSE_TYPE):
 	show()
 
@@ -55,15 +57,17 @@ func start_player_turn():
 		if candy == null:
 			reset_basket()
 			candy = basket_ref.pop_back()
-
-		var candy_node = preload('res://candy_display.tscn').instantiate()
-		candy_node.initialize(candy)
-		$CandyContainer.add_child(candy_node)
+			
+		var candy_texture = Shared.get_candy_texture(candy.texture_path)
+		$CandyContainer.add_item(candy.name, candy_texture, i + 1)
 	
 	# Use candy against enemies
 	# Hit end turn button
 	
 
+func _on_candy_press(candy: CandyClass, toggle: bool):
+	print(candy, toggle)
+	selected_candy = candy
 
 func start_enemy_turn():
 	for enemy in $EnemyContainer.get_children():
