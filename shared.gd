@@ -67,7 +67,7 @@ enum CandyLevel {
 }
 
 var candy_level_multiplier = {
-	CandyLevel.FUN_SIZE: 0, 
+	CandyLevel.FUN_SIZE: 1, 
 	CandyLevel.REGULAR_SIZE: 2,
 	CandyLevel.KING_SIZE: 3, # Also hits random enemy
 	CandyLevel.PARTY_SIZE: 3 # Also hits two extra random enemies

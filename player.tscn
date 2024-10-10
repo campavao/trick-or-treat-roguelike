@@ -9,17 +9,19 @@ bg_color = Color(1, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nqixi"]
 bg_color = Color(0.6, 1, 0, 1)
 
-[node name="PlayerDisplay" type="Node2D"]
+[node name="PlayerDisplay" type="TextureButton"]
+offset_left = -64.0
+offset_top = -71.0
+offset_right = 64.0
+offset_bottom = 57.0
+texture_normal = ExtResource("2_jtomn")
 script = ExtResource("1_t82bl")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_jtomn")
-
 [node name="HealthBar" type="ProgressBar" parent="."]
-offset_left = -53.0
-offset_top = -71.0
-offset_right = 53.0
-offset_bottom = -60.0
+offset_left = 13.0
+offset_top = -2.0
+offset_right = 119.0
+offset_bottom = 9.0
 theme_override_styles/background = SubResource("StyleBoxFlat_ytt0p")
 theme_override_styles/fill = SubResource("StyleBoxFlat_nqixi")
 max_value = 20.0

@@ -1,4 +1,4 @@
-extends Node2D
+extends TextureButton
 
 var player_ref: Player
 
@@ -11,10 +11,10 @@ func init(player: Player):
 	
 	match player.character:
 		Shared.Characters.WARRIOR:
-			$Sprite2D.texture = preload("res://art/warrior.png")
+			texture_normal = preload("res://art/warrior.png")
 
 		Shared.Characters.WIZARD:
-			$Sprite2D.texture = preload("res://art/wizard.png")
+			texture_normal = preload("res://art/wizard.png")
 
 		Shared.Characters.WITCH:
-			$Sprite2D.texture = preload("res://art/witch.png")
+			texture_normal = preload("res://art/witch.png")

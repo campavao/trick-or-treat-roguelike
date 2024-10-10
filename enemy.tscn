@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dq7b6a2c51nug"]
+[gd_scene load_steps=6 format=3 uid="uid://dq7b6a2c51nug"]
 
 [ext_resource type="Texture2D" uid="uid://dq1rxnov7cusx" path="res://art/warrior.png" id="1_6vqmo"]
 [ext_resource type="Script" path="res://enemy.gd" id="1_jd3w1"]
+[ext_resource type="Texture2D" uid="uid://8lxupw4eicnt" path="res://art/attack_intent.png" id="3_fab6k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_214ns"]
 bg_color = Color(1, 0, 0, 1)
@@ -9,21 +10,26 @@ bg_color = Color(1, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bo4u0"]
 bg_color = Color(0.6, 1, 0, 1)
 
-[node name="Enemy" type="Control"]
+[node name="Enemy" type="TextureButton"]
 custom_minimum_size = Vector2(32, 0)
-layout_mode = 3
-anchors_preset = 0
+offset_left = -66.0
+offset_top = -75.0
+offset_right = 62.0
+offset_bottom = 53.0
+texture_normal = ExtResource("1_6vqmo")
+flip_h = true
 script = ExtResource("1_jd3w1")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_6vqmo")
-flip_h = true
-
 [node name="HealthBar" type="ProgressBar" parent="."]
-offset_left = -53.0
-offset_top = -71.0
-offset_right = 53.0
-offset_bottom = -60.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.156
+anchor_right = 0.93
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = -29.968
+offset_right = -0.0400085
+offset_bottom = -127.0
 theme_override_styles/background = SubResource("StyleBoxFlat_214ns")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bo4u0")
 max_value = 20.0
@@ -31,3 +37,9 @@ step = 1.0
 value = 20.0
 allow_greater = true
 show_percentage = false
+
+[node name="NextMove" type="Sprite2D" parent="."]
+position = Vector2(67, -43)
+texture = ExtResource("3_fab6k")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

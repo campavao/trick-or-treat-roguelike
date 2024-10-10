@@ -1,6 +1,8 @@
 extends Node
 class_name Enemy
 
+signal selected(enemy: Enemy)
+
 @export var health: int = 10
 @export var power: int = 2
 @export var is_dead := false
@@ -24,7 +26,7 @@ func initialize(starting_health, starting_power):
 	$HealthBar.value = starting_health
 	$HealthBar.max_value = starting_health
 
-func start_turn():
+func reset():
 	if eat_at_start_of_turn:
 		eat(eat_at_start_of_turn)
 		eat_at_start_of_turn = null
@@ -44,6 +46,7 @@ func attack(player):
 			health += power
 
 func eat(amount: int):
+	print(self, ' is eating: ', amount)
 	health -= amount
 	if health <= 0:
 		die()
@@ -58,10 +61,23 @@ func eat_again(amount):
 	eat_at_start_of_turn = amount
 
 func die():
-	# animation
-	is_dead = true
+	# animation and then die?
+	# is_dead = true
+	queue_free()
 
 func pick_next_move():
 	var enum_size = MOVES.size()
 	var random_index = int(randf() * enum_size)  # randf() gives a float in the range [0.0, 1.0)
 	next_move = MOVES.values()[random_index]
+	
+	match next_move:
+		MOVES.ATTACK, MOVES.SPECIAL:
+			$NextMove.texture = preload('res://art/attack_intent.png')
+		MOVES.DEFEND:
+			$NextMove.texture = preload('res://art/heal_intent.png')
+
+func _on_pressed() -> void:
+	selected.emit(self)
+
+func _process(_delta):
+	$HealthBar.value = health
