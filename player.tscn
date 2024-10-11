@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c4vi1t5xc3hty"]
+[gd_scene load_steps=6 format=3 uid="uid://c4vi1t5xc3hty"]
 
 [ext_resource type="Script" path="res://player_display.gd" id="1_t82bl"]
 [ext_resource type="Texture2D" uid="uid://dq1rxnov7cusx" path="res://art/warrior.png" id="2_jtomn"]
+[ext_resource type="Texture2D" uid="uid://bn21uogr7abev" path="res://art/protection_intent.png" id="3_f20ov"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ytt0p"]
 bg_color = Color(1, 0, 0, 1)
@@ -29,3 +30,18 @@ step = 1.0
 value = 20.0
 allow_greater = true
 show_percentage = false
+
+[node name="ProtectionIcon" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(139, 3)
+texture = ExtResource("3_f20ov")
+
+[node name="ProtectionAmount" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 125.0
+offset_top = -9.0
+offset_right = 153.0
+offset_bottom = 14.0
+text = "0"
+horizontal_alignment = 1

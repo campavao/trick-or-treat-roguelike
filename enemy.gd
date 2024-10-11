@@ -1,20 +1,15 @@
-extends Node
+extends CharacterBase
 class_name Enemy
 
 signal selected(enemy: Enemy)
 
-@export var health: int = 10
-@export var power: int = 2
 @export var is_dead := false
 @export var is_elite := false
 
-var is_dazed := false
-var is_tied_up := false
 var next_move: MOVES = MOVES.ATTACK
-var eat_at_start_of_turn = null # int or null
 
 enum MOVES {
-	ATTACK, DEFEND, SPECIAL
+	ATTACK, SPECIAL, DEFEND
 }
 
 func initialize(starting_health, starting_power):
@@ -27,57 +22,71 @@ func initialize(starting_health, starting_power):
 	$HealthBar.max_value = starting_health
 
 func reset():
-	if eat_at_start_of_turn:
-		eat(eat_at_start_of_turn)
-		eat_at_start_of_turn = null
-
-	# Reset on start of turn
-	is_dazed = false
-	is_tied_up = false
+	super.reset()
 
 	# pick next move
 	pick_next_move()
 
 func attack(player):
+	if is_dazed or is_tied_up:
+		return
+		
 	match (next_move):
-		MOVES.ATTACK, MOVES.SPECIAL:
+		MOVES.ATTACK:
 			player.eat(power)
 		MOVES.DEFEND:
 			health += power
+		MOVES.SPECIAL:
+			protect(2)
 
 func eat(amount: int):
-	print(self, ' is eating: ', amount)
-	health -= amount
+	super.eat(amount)
+	
 	if health <= 0:
 		die()
-
-func daze():
-	is_dazed = true
-
-func tie_up():
-	is_tied_up = true
-
-func eat_again(amount):
-	eat_at_start_of_turn = amount
 
 func die():
 	# animation and then die?
 	# is_dead = true
 	queue_free()
+	
+func daze():
+	super.daze()
+	$NextMove.texture = preload('res://art/dazed_intent.png')
+
+func tie_up():
+	super.tie_up()
+	$NextMove.texture = preload('res://art/tied_up_intent.png')
+
 
 func pick_next_move():
 	var enum_size = MOVES.size()
+
+	# If we're at max health, attack or special only
+	if health == $HealthBar.max_value:
+		enum_size = 1
+		
 	var random_index = int(randf() * enum_size)  # randf() gives a float in the range [0.0, 1.0)
 	next_move = MOVES.values()[random_index]
 	
 	match next_move:
-		MOVES.ATTACK, MOVES.SPECIAL:
+		MOVES.ATTACK:
 			$NextMove.texture = preload('res://art/attack_intent.png')
 		MOVES.DEFEND:
 			$NextMove.texture = preload('res://art/heal_intent.png')
+		MOVES.SPECIAL:
+			$NextMove.texture = preload('res://art/protection_intent.png')
 
 func _on_pressed() -> void:
 	selected.emit(self)
 
 func _process(_delta):
 	$HealthBar.value = health
+	$ProtectionAmount.text = str(protection)
+		
+	if protection > 0:
+		$ProtectionIcon.show()
+		$ProtectionAmount.show()
+	else:
+		$ProtectionIcon.hide()
+		$ProtectionAmount.hide()

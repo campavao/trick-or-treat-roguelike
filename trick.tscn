@@ -38,10 +38,11 @@ offset_right = 276.0
 offset_bottom = 366.0
 
 [node name="EnemyContainer" type="HBoxContainer" parent="."]
-offset_left = 601.0
+offset_left = 565.0
 offset_top = 254.0
 offset_right = 1121.0
 offset_bottom = 375.0
+theme_override_constants/separation = 20
 
 [node name="CandyContainer" type="ItemList" parent="."]
 custom_minimum_size = Vector2(64, 0)

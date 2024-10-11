@@ -106,7 +106,7 @@ func get_candy(candy: Candy, level: CandyLevel = CandyLevel.FUN_SIZE):
 		Candy.SWEDISH_FISH:
 			add_candy_details(candy_base, 3, "res://art/candy/swedish_fish_fun.png")
 		Candy.GUMMY_BEARS:
-			add_candy_details(candy_base, 0, "res://art/candy/gummy_bears_fun.png")
+			add_candy_details(candy_base, -2, "res://art/candy/gummy_bears_fun.png")
 		Candy.NERDS_ROPE:
 			add_candy_details(candy_base, 0, "res://art/candy/nerds_rope_fun.png")
 			

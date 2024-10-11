@@ -44,7 +44,8 @@ func use(target: Node, all_targets: Array[Node]):
 			# Daze
 			target.daze()
 		Candy.GUMMY_BEARS:
-			target.protect()
+			print('protecting')
+			target.protect(-power)
 		Candy.NERDS_ROPE:
 			target.tie_up()
 		Candy.SWEDISH_FISH:

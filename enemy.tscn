@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dq7b6a2c51nug"]
+[gd_scene load_steps=7 format=3 uid="uid://dq7b6a2c51nug"]
 
 [ext_resource type="Texture2D" uid="uid://dq1rxnov7cusx" path="res://art/warrior.png" id="1_6vqmo"]
 [ext_resource type="Script" path="res://enemy.gd" id="1_jd3w1"]
 [ext_resource type="Texture2D" uid="uid://8lxupw4eicnt" path="res://art/attack_intent.png" id="3_fab6k"]
+[ext_resource type="Texture2D" uid="uid://bn21uogr7abev" path="res://art/protection_intent.png" id="4_h4o5g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_214ns"]
 bg_color = Color(1, 0, 0, 1)
@@ -41,5 +42,19 @@ show_percentage = false
 [node name="NextMove" type="Sprite2D" parent="."]
 position = Vector2(67, -43)
 texture = ExtResource("3_fab6k")
+
+[node name="ProtectionIcon" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-8, -3)
+texture = ExtResource("4_h4o5g")
+
+[node name="ProtectionAmount" type="Label" parent="."]
+visible = false
+offset_left = -22.0
+offset_top = -15.0
+offset_right = 6.0
+offset_bottom = 8.0
+text = "0"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

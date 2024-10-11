@@ -1,4 +1,4 @@
-extends Node
+extends CharacterBase
 class_name Player
 
 const Characters = Shared.Characters
@@ -6,10 +6,10 @@ const Candy = Shared.Candy
 
 var character: Characters
 var basket: Array[CandyClass]
-var health := 20
 
 func _init(state) -> void:
 	character = state["character"]
+	health = 20
 	
 	# 4 Unhealthy x 4 Healthy x 2 Special
 	var crunch_bar = Shared.get_candy(Shared.Candy.CRUNCH)
@@ -45,6 +45,3 @@ func _init(state) -> void:
 func add_candies(candy, amount = 2):
 	for i in amount:
 		basket.push_back(candy)
-
-func eat(amount: int):
-	health -= amount

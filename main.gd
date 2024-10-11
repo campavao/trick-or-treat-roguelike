@@ -2,16 +2,16 @@ extends Node2D
 
 const Characters = Shared.Characters
 
-var state: Player
+var player: Player
 
 func _on_start_character_select(character: Characters) -> void:
-	state = Player.new({ "character": character })
+	player = Player.new({ "character": character })
 	$CharacterName.text = Shared.get_character_name(character)
 	$"First Neighborhood".start()
 
 func _on_first_neighborhood_finish() -> void:
 	$"First Neighborhood".hide()
-	$Finish.enable(true, state.character)
+	$Finish.enable(true, player.character)
 
 
 func _on_finish_start_over() -> void:
@@ -35,18 +35,26 @@ func _on_boss_complete() -> void:
 
 # House selected
 func _on_first_neighborhood_house_selected() -> void:
-	$Trick.enable(state, Shared.HOUSE_TYPE.NORMAL)
+	$Trick.enable(player, Shared.HOUSE_TYPE.NORMAL)
 	$"First Neighborhood".hide()
 
 
 func _on_first_neighborhood_rich_house_selected() -> void:
-	$Treat.enable(state, Shared.HOUSE_TYPE.RICH)
+	$Treat.enable(player, Shared.HOUSE_TYPE.RICH)
 	$"First Neighborhood".hide()
 
 func _on_first_neighborhood_friends_house_selected() -> void:
-	$FriendsHouse.enable(state)
+	$FriendsHouse.enable(player)
 	$"First Neighborhood".hide()
 
 func _on_first_neighborhood_boss_selected() -> void:
-	$Boss.enable(state)
+	$Boss.enable(player)
 	$"First Neighborhood".hide()
+
+func _process(_delta):
+	if player == null or $Finish.visible:
+		return
+	
+	if player.health <= 0:
+		$Finish.enable(false, player.character)
+		player = null

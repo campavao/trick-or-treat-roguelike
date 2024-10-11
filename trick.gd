@@ -36,12 +36,13 @@ func enable(player: Player, type: Shared.HOUSE_TYPE):
 func _on_button_pressed() -> void:
 	finish()
 	
-func finish():
+func finish(is_complete: bool = true):
 	hide()
 	reset_enemies()
 	clear_hand()
 	
-	complete.emit()
+	if is_complete:
+		complete.emit()
 	
 func reset_enemies():
 	for enemy in $EnemyContainer.get_children():
@@ -126,5 +127,11 @@ func on_activate_candy(target: Node, all_targets: Array[Node]):
 	used_candy.push_back(candy)
 
 func _process(delta: float) -> void:
-	if visible and $EnemyContainer.get_children().size() == 0:
+	if not visible:
+		return
+		
+	if $EnemyContainer.get_children().size() == 0:
 		finish()
+
+	if player_ref.health <= 0:
+		finish(false)
