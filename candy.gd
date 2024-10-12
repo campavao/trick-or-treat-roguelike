@@ -139,4 +139,4 @@ func level_up():
 			level = Level.PARTY_SIZE
 			path_parts[3] = path_parts[3].replace("_king", "_party")
 
-	texture_path = path_parts.join("/")
+	texture_path = "/".join(path_parts)

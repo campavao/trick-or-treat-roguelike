@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://dq1rxnov7cusx" path="res://art/warrior.png" id="2_jtomn"]
 [ext_resource type="Texture2D" uid="uid://bn21uogr7abev" path="res://art/protection_intent.png" id="3_f20ov"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ytt0p"]
-bg_color = Color(1, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4v1dd"]
+bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nqixi"]
-bg_color = Color(0.6, 1, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f366u"]
+bg_color = Color(0.6, 0, 0, 1)
 
 [node name="PlayerDisplay" type="TextureButton"]
 offset_left = -64.0
@@ -19,30 +19,41 @@ texture_normal = ExtResource("2_jtomn")
 script = ExtResource("1_t82bl")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.156
+anchor_right = 0.93
+anchor_bottom = 1.0
 offset_left = 13.0
-offset_top = -2.0
-offset_right = 119.0
-offset_bottom = 9.0
-theme_override_styles/background = SubResource("StyleBoxFlat_ytt0p")
-theme_override_styles/fill = SubResource("StyleBoxFlat_nqixi")
+offset_top = -40.968
+offset_right = -0.0400009
+offset_bottom = -122.0
+theme_override_styles/background = SubResource("StyleBoxFlat_4v1dd")
+theme_override_styles/fill = SubResource("StyleBoxFlat_f366u")
 max_value = 20.0
 step = 1.0
 value = 20.0
-allow_greater = true
 show_percentage = false
+
+[node name="HealthBarLabel" type="Label" parent="."]
+offset_left = 44.0
+offset_top = -19.0
+offset_right = 87.0
+offset_bottom = 4.0
+text = "20/20"
 
 [node name="ProtectionIcon" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(139, 3)
+position = Vector2(142, -9)
 texture = ExtResource("3_f20ov")
+metadata/_edit_group_ = true
 
 [node name="ProtectionAmount" type="Label" parent="."]
 visible = false
-layout_mode = 0
-offset_left = 125.0
-offset_top = -9.0
-offset_right = 153.0
-offset_bottom = 14.0
+offset_left = 128.0
+offset_top = -21.0
+offset_right = 156.0
+offset_bottom = 2.0
 text = "0"
 horizontal_alignment = 1
+metadata/_edit_group_ = true

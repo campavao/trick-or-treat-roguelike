@@ -33,7 +33,7 @@ enum Candy {
 	# Special
 	ROCK, # 5 Damage and daze someone for a turn
 	NOW_AND_LATER, # 4 Damage and attack again next turn
-	SWEDISH_FISH, # 3 Damage to two enemies
+	SWEDISH_FISH, # 3 Damage to all enemies
 	GUMMY_BEARS, # Takes damage for you next turn
 	NERDS_ROPE, # Tie up someone for next turn
 }
@@ -59,6 +59,53 @@ var candy_names = {
 	Candy.SWEDISH_FISH: "SWEDISH FISH",
 }
 
+func get_candy_description(candy: Candy, yum: int, level: CandyLevel):
+	var power = abs(yum) * get_power_multiplier(level)
+	var base_string = ""
+	match candy:
+		# Unhealthy
+		Candy.REESES:
+			base_string = "Deals " + str(power) + " damage."
+		Candy.TWIX:
+			base_string = "Deals " + str(power) + " damage."
+		Candy.HERSHEY_BAR:
+			base_string = "Deals " + str(power) + " damage."
+		Candy.KITKAT:
+			base_string = "Deals " + str(power) + " damage."
+		Candy.CRUNCH:
+			base_string = "Deals " + str(power) + " damage."
+		# Healthy
+		Candy.LIFESAVERS:
+			base_string = "Heals " + str(power) + " health."
+		Candy.WERTHERS:
+			base_string = "Heals " + str(power) + " health."
+		Candy.APPLE:
+			base_string = "Heals " + str(power) + " health."
+		Candy.HEATH:
+			base_string = "Heals " + str(power) + " health."
+		Candy.FRUIT_GUMMIES:
+			base_string = "Heals " + str(power) + " health."
+		# Special
+		Candy.ROCK:
+			base_string = "Deals " + str(power) + " damage and dazes the target for a turn.\nWhile dazed, the target cannot attack or use abilities and takes double damages."
+		Candy.NOW_AND_LATER:
+			base_string = "Deals " + str(power) + " damage and attacks again next turn."
+		Candy.GUMMY_BEARS:
+			base_string = "Takes " + str(power) + " damage for you next turn."
+		Candy.NERDS_ROPE:
+			base_string = "Ties up the target for next turn.\nWhile tied, the target cannot attack or use abilities."
+		Candy.SWEDISH_FISH:
+			base_string = "Deals " + str(power) + " damage to all targets."
+
+	match level:
+		CandyLevel.KING_SIZE:
+			return base_string + "\n" + "Hits an extra target."
+		CandyLevel.PARTY_SIZE:
+			return base_string + "\n" + "Hits two extra targets."
+
+	return base_string
+
+
 func get_candy_name(candy: Candy):
 	return candy_names[candy]
 
@@ -67,14 +114,14 @@ enum CandyLevel {
 }
 
 var candy_level_names = {
-	CandyLevel.FUN_SIZE: "Fun", 
-	CandyLevel.REGULAR_SIZE: "Regular",
-	CandyLevel.KING_SIZE: "King",
-	CandyLevel.PARTY_SIZE: "Party"
+	CandyLevel.FUN_SIZE: "Fun Size",
+	CandyLevel.REGULAR_SIZE: "Regular Size",
+	CandyLevel.KING_SIZE: "King Size",
+	CandyLevel.PARTY_SIZE: "Party Size"
 }
 
 var candy_level_multiplier = {
-	CandyLevel.FUN_SIZE: 1, 
+	CandyLevel.FUN_SIZE: 1,
 	CandyLevel.REGULAR_SIZE: 2,
 	CandyLevel.KING_SIZE: 3, # Also hits random enemy
 	CandyLevel.PARTY_SIZE: 3 # Also hits two extra random enemies
@@ -116,7 +163,7 @@ func get_candy(candy: Candy, level: CandyLevel = CandyLevel.FUN_SIZE):
 			add_candy_details(candy_base, -2, get_candy_texture_path("gummy_bears", level))
 		Candy.NERDS_ROPE:
 			add_candy_details(candy_base, 0, get_candy_texture_path("nerds_rope", level))
-			
+
 	return CandyClass.new(candy_base)
 
 func add_candy_details(base: Dictionary, yum: int, texture_path: String):
@@ -127,19 +174,19 @@ func get_random_candy(level: CandyLevel = CandyLevel.FUN_SIZE):
 	var enum_size = Candy.size()
 	var random_index = int(randf() * enum_size)  # randf() gives a float in the range [0.0, 1.0)
 	return get_candy(random_index, level)
-	
-	
+
+
 const FALLBACK_IMAGE = preload('res://art/candy/reeses_fun.png')
 
 func get_candy_texture(path: String):
 	var texture = load(path)
-	
+
 	if texture == null:
 		print("No image found for: ", path)
 		texture = FALLBACK_IMAGE
-		
+
 	return texture
-	
+
 func get_candy_texture_path(candy_name: String, level: CandyLevel):
 	var level_string = ""
 	match level:
@@ -151,12 +198,15 @@ func get_candy_texture_path(candy_name: String, level: CandyLevel):
 			level_string = "_king"
 		CandyLevel.PARTY_SIZE:
 			level_string = "_party"
-			
+
 	return "res://art/candy/" + candy_name + level_string + ".png"
-	
+
 func get_candy_name_with_level(candy: CandyClass):
 	return get_candy_name(candy.type) + " (" + candy_level_names[candy.level] + ")"
-	
+
+func get_candy_tooltip(candy: CandyClass):
+	return get_candy_name(candy.type) + "\n" + "(" + candy_level_names[candy.level] + ")" + "\n" + get_candy_description(candy.type, candy.yum, candy.level)
+
 ### House ######################################################################
 
 enum HOUSE_TYPE {

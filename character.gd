@@ -3,7 +3,6 @@ class_name CharacterBase
 
 var starting_health: int = 10
 @export var health: int = 10
-@export var power: int = 2
 var protection := 0
 
 var is_dazed := false

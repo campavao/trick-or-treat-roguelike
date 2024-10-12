@@ -36,12 +36,21 @@ func _on_boss_complete() -> void:
 
 # House selected
 func _on_first_neighborhood_house_selected() -> void:
-	$Trick.enable(player, Shared.HOUSE_TYPE.NORMAL)
+	var is_trick = randi_range(0, 1)
+	if is_trick == 1:
+		$Trick.enable(player, Shared.HOUSE_TYPE.NORMAL)
+	else:
+		$Treat.enable(player, Shared.HOUSE_TYPE.NORMAL)
+
 	$"First Neighborhood".hide()
 
-
 func _on_first_neighborhood_rich_house_selected() -> void:
-	$Treat.enable(player, Shared.HOUSE_TYPE.RICH)
+	var is_trick = randi_range(0, 1)
+	if is_trick == 1:
+		$Trick.enable(player, Shared.HOUSE_TYPE.RICH)
+	else:
+		$Treat.enable(player, Shared.HOUSE_TYPE.RICH)
+		
 	$"First Neighborhood".hide()
 
 func _on_first_neighborhood_friends_house_selected() -> void:

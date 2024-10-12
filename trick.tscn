@@ -47,6 +47,7 @@ offset_left = 28.0
 offset_top = 491.0
 offset_right = 1129.0
 offset_bottom = 624.0
+tooltip_text = "Hello"
 theme_override_constants/h_separation = 22
 theme_override_font_sizes/font_size = 8
 theme_override_styles/focus = SubResource("StyleBoxEmpty_e0l03")

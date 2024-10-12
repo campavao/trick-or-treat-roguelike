@@ -5,23 +5,26 @@ signal selected(enemy: Enemy)
 
 @export var is_dead := false
 @export var is_elite := false
+@export var power: int = 2
 
 var next_move: MOVES = MOVES.ATTACK
 
 enum MOVES {
-	ATTACK = 0, 
-	SPECIAL = 1, 
+	ATTACK = 0,
+	SPECIAL = 1,
 	DEFEND = 2
 }
 
-func initialize(starting_health, starting_power):
+func initialize(init_health: int, starting_power: int, is_rich: bool):
 	pick_next_move()
-	
+
 	power = starting_power
-	
-	set_starting_health(starting_health)
-	$HealthBar.value = starting_health
-	$HealthBar.max_value = starting_health
+	is_elite = is_rich
+
+	set_starting_health(init_health)
+	$HealthBar.value = init_health
+	$HealthBar.max_value = init_health
+	$HealthBarLabel.text = str(init_health) + " / " + str(init_health)
 
 func reset():
 	super.reset()
@@ -32,7 +35,7 @@ func reset():
 func attack(player):
 	if is_dazed or is_tied_up:
 		return
-		
+
 	match (next_move):
 		MOVES.ATTACK:
 			player.eat(power)
@@ -43,7 +46,7 @@ func attack(player):
 
 func eat(amount: int):
 	super.eat(amount)
-	
+
 	if health <= 0:
 		die()
 
@@ -51,7 +54,7 @@ func die():
 	# animation and then die?
 	# is_dead = true
 	queue_free()
-	
+
 func daze():
 	super.daze()
 	$NextMove.texture = preload('res://art/dazed_intent.png')
@@ -67,10 +70,10 @@ func pick_next_move():
 	# If we're at max health, attack or special only
 	if is_full_health():
 		enum_size = 1
-		
+
 	var random_index = randi_range(0, enum_size - 1)
 	next_move = MOVES.values()[random_index]
-	
+
 	match next_move:
 		MOVES.ATTACK:
 			$NextMove.texture = preload('res://art/attack_intent.png')
@@ -85,7 +88,7 @@ func _on_pressed() -> void:
 func _process(_delta):
 	$HealthBar.value = health
 	$ProtectionAmount.text = str(protection)
-		
+	$HealthBarLabel.text = str(health) + " / " + str(starting_health)
 	if protection > 0:
 		$ProtectionIcon.show()
 		$ProtectionAmount.show()
