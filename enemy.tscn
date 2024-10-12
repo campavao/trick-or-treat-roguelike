@@ -50,6 +50,7 @@ texture = ExtResource("4_h4o5g")
 
 [node name="ProtectionAmount" type="Label" parent="."]
 visible = false
+layout_mode = 0
 offset_left = -22.0
 offset_top = -15.0
 offset_right = 6.0

@@ -83,7 +83,7 @@ text = "Skip"
 
 [node name="CandyPicker" type="ItemList" parent="RewardContainer"]
 layout_mode = 2
-offset_left = 334.0
+offset_left = 431.0
 offset_top = 184.0
 offset_right = 1150.0
 offset_bottom = 410.0

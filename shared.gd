@@ -66,6 +66,13 @@ enum CandyLevel {
 	FUN_SIZE, REGULAR_SIZE, KING_SIZE, PARTY_SIZE
 }
 
+var candy_level_names = {
+	CandyLevel.FUN_SIZE: "Fun", 
+	CandyLevel.REGULAR_SIZE: "Regular",
+	CandyLevel.KING_SIZE: "King",
+	CandyLevel.PARTY_SIZE: "Party"
+}
+
 var candy_level_multiplier = {
 	CandyLevel.FUN_SIZE: 1, 
 	CandyLevel.REGULAR_SIZE: 2,
@@ -80,35 +87,35 @@ func get_candy(candy: Candy, level: CandyLevel = CandyLevel.FUN_SIZE):
 	var candy_base = { "type": candy, "level": level }
 	match (candy):
 		Candy.REESES:
-			add_candy_details(candy_base, 5, "res://art/candy/reeses_fun.png")
+			add_candy_details(candy_base, 5, get_candy_texture_path("reeses", level))
 		Candy.TWIX:
-			add_candy_details(candy_base, 4, "res://art/candy/twix_fun.png")
+			add_candy_details(candy_base, 4, get_candy_texture_path("twix", level))
 		Candy.HERSHEY_BAR:
-			add_candy_details(candy_base, 4, "res://art/candy/hershey_fun.png")
+			add_candy_details(candy_base, 4, get_candy_texture_path("hershey", level))
 		Candy.KITKAT:
-			add_candy_details(candy_base, 3, "res://art/candy/kitkat_fun.png")
+			add_candy_details(candy_base, 3, get_candy_texture_path("kitkat", level))
 		Candy.CRUNCH:
-			add_candy_details(candy_base, 2, "res://art/candy/crunch_fun.png")
+			add_candy_details(candy_base, 2, get_candy_texture_path("crunch", level))
 		Candy.LIFESAVERS:
-			add_candy_details(candy_base, -5, "res://art/candy/lifesavers_fun.png")
+			add_candy_details(candy_base, -5, get_candy_texture_path("lifesavers", level))
 		Candy.WERTHERS:
-			add_candy_details(candy_base, -4, "res://art/candy/werthers_fun.png")
+			add_candy_details(candy_base, -4, get_candy_texture_path("werthers", level))
 		Candy.APPLE:
-			add_candy_details(candy_base, -4, "res://art/candy/apple_fun.png")
+			add_candy_details(candy_base, -4, get_candy_texture_path("apple", level))
 		Candy.HEATH:
-			add_candy_details(candy_base, -3, "res://art/candy/heath_fun.png")
+			add_candy_details(candy_base, -3, get_candy_texture_path("heath", level))
 		Candy.FRUIT_GUMMIES:
-			add_candy_details(candy_base, -2, "res://art/candy/fruit_gummies_fun.png")
+			add_candy_details(candy_base, -2, get_candy_texture_path("fruit_gummies", level))
 		Candy.ROCK:
-			add_candy_details(candy_base, 5, "res://art/candy/rock_fun.png")
+			add_candy_details(candy_base, 5, get_candy_texture_path("rock", level))
 		Candy.NOW_AND_LATER:
-			add_candy_details(candy_base, 4, "res://art/candy/now_and_later_fun.png")
+			add_candy_details(candy_base, 4, get_candy_texture_path("now_and_later", level))
 		Candy.SWEDISH_FISH:
-			add_candy_details(candy_base, 3, "res://art/candy/swedish_fish_fun.png")
+			add_candy_details(candy_base, 3, get_candy_texture_path("swedish_fish", level))
 		Candy.GUMMY_BEARS:
-			add_candy_details(candy_base, -2, "res://art/candy/gummy_bears_fun.png")
+			add_candy_details(candy_base, -2, get_candy_texture_path("gummy_bears", level))
 		Candy.NERDS_ROPE:
-			add_candy_details(candy_base, 0, "res://art/candy/nerds_rope_fun.png")
+			add_candy_details(candy_base, 0, get_candy_texture_path("nerds_rope", level))
 			
 	return CandyClass.new(candy_base)
 
@@ -116,10 +123,10 @@ func add_candy_details(base: Dictionary, yum: int, texture_path: String):
 	base['yum'] = yum
 	base['texture_path'] = texture_path
 
-func get_random_candy():
+func get_random_candy(level: CandyLevel = CandyLevel.FUN_SIZE):
 	var enum_size = Candy.size()
 	var random_index = int(randf() * enum_size)  # randf() gives a float in the range [0.0, 1.0)
-	return get_candy(random_index)
+	return get_candy(random_index, level)
 	
 	
 const FALLBACK_IMAGE = preload('res://art/candy/reeses_fun.png')
@@ -132,7 +139,24 @@ func get_candy_texture(path: String):
 		texture = FALLBACK_IMAGE
 		
 	return texture
-
+	
+func get_candy_texture_path(candy_name: String, level: CandyLevel):
+	var level_string = ""
+	match level:
+		CandyLevel.FUN_SIZE:
+			level_string = "_fun"
+		CandyLevel.REGULAR_SIZE:
+			level_string = "_regular"
+		CandyLevel.KING_SIZE:
+			level_string = "_king"
+		CandyLevel.PARTY_SIZE:
+			level_string = "_party"
+			
+	return "res://art/candy/" + candy_name + level_string + ".png"
+	
+func get_candy_name_with_level(candy: CandyClass):
+	return get_candy_name(candy.type) + " (" + candy_level_names[candy.level] + ")"
+	
 ### House ######################################################################
 
 enum HOUSE_TYPE {

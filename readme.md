@@ -55,7 +55,7 @@ These are what you use to battle and heal yourself and others. Everyone has a se
 ### Candy Level Multiplier
 These are multiplied by the base value of the candy. If there aren't enough random targets, it will trigger again on the same target.
 
-  1. Fun Size = 0
+  1. Fun Size = 1
   2. Regular Size = 2
   3. King Size = 3 and hits another random target
   4. Party Size = 3 and hits 2 additional random targets

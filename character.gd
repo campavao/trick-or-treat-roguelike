@@ -1,6 +1,7 @@
 extends Node
 class_name CharacterBase
 
+var starting_health: int = 10
 @export var health: int = 10
 @export var power: int = 2
 var protection := 0
@@ -8,6 +9,13 @@ var protection := 0
 var is_dazed := false
 var is_tied_up := false
 var eat_at_start_of_turn = null # int or null
+
+func set_starting_health(amount: int):
+	health = amount
+	starting_health = amount
+	
+func is_full_health():
+	return health == starting_health
 
 func reset():
 	if eat_at_start_of_turn:
@@ -18,12 +26,17 @@ func reset():
 	is_dazed = false
 	is_tied_up = false
 
-
+# If the amount is positive, we're taking damage
+# If the amount is negative, we're healing
 func eat(original_amount: int):
+	# Prevent healing on full health
+	if original_amount < 0 and is_full_health():
+		return
+		
 	var amount = original_amount
 	
 	# Take double damage if dazed
-	if is_dazed:
+	if is_dazed and amount > 0:
 		amount *= 2
 		
 	print(self, ' is eating: ', amount)
@@ -43,6 +56,10 @@ func eat(original_amount: int):
 		protection = 0
 	else:
 		health -= amount
+		
+		# Don't overfill health
+		if health > starting_health:
+			health = starting_health
 
 func daze():
 	is_dazed = true

@@ -9,7 +9,7 @@ var basket: Array[CandyClass]
 
 func _init(state) -> void:
 	character = state["character"]
-	health = 20
+	set_starting_health(20)
 	
 	# 4 Unhealthy x 4 Healthy x 2 Special
 	var crunch_bar = Shared.get_candy(Shared.Candy.CRUNCH)

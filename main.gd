@@ -31,7 +31,8 @@ func _on_friends_house_complete() -> void:
 
 
 func _on_boss_complete() -> void:
-	$"First Neighborhood".show()
+	$"First Neighborhood".hide()
+	$Finish.enable(true, player.character)
 
 # House selected
 func _on_first_neighborhood_house_selected() -> void:

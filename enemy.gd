@@ -9,7 +9,9 @@ signal selected(enemy: Enemy)
 var next_move: MOVES = MOVES.ATTACK
 
 enum MOVES {
-	ATTACK, SPECIAL, DEFEND
+	ATTACK = 0, 
+	SPECIAL = 1, 
+	DEFEND = 2
 }
 
 func initialize(starting_health, starting_power):
@@ -17,7 +19,7 @@ func initialize(starting_health, starting_power):
 	
 	power = starting_power
 	
-	health = starting_health
+	set_starting_health(starting_health)
 	$HealthBar.value = starting_health
 	$HealthBar.max_value = starting_health
 
@@ -63,10 +65,10 @@ func pick_next_move():
 	var enum_size = MOVES.size()
 
 	# If we're at max health, attack or special only
-	if health == $HealthBar.max_value:
+	if is_full_health():
 		enum_size = 1
 		
-	var random_index = int(randf() * enum_size)  # randf() gives a float in the range [0.0, 1.0)
+	var random_index = randi_range(0, enum_size - 1)
 	next_move = MOVES.values()[random_index]
 	
 	match next_move:

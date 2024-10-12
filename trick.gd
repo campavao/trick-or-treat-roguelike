@@ -15,6 +15,9 @@ var used_candy: Array[CandyClass]
 # Candy in hand
 var hand: Array[CandyClass]
 
+# Rewards at end
+var rewards: Array[CandyClass]
+
 var selected_candy: CandyClass
 
 func enable(player: Player, type: Shared.HOUSE_TYPE):
@@ -29,6 +32,9 @@ func enable(player: Player, type: Shared.HOUSE_TYPE):
 
 	# Setup player
 	$Player.init(player)
+	
+	# Setup rewards
+	setup_rewards(type)
 
 	# Start player turn
 	start_player_turn()
@@ -40,6 +46,7 @@ func finish(is_complete: bool = true):
 	hide()
 	reset_enemies()
 	clear_hand()
+	clear_rewards()
 	
 	if is_complete:
 		complete.emit()
@@ -60,6 +67,11 @@ func clear_hand():
 	$CandyContainer.clear()
 	hand.clear()
 	used_candy.clear()
+	
+func clear_rewards():
+	$RewardContainer.hide()
+	$RewardContainer/CandyPicker.clear()
+	rewards.clear()
 
 func setup_enemies(type: Shared.HOUSE_TYPE):
 	var amount = randi_range(1, 4) # Random int between 1 and 4
@@ -88,33 +100,38 @@ func start_player_turn():
 			
 		hand.push_back(candy)
 		var candy_texture = Shared.get_candy_texture(candy.texture_path)
-		$CandyContainer.add_item(candy.name, candy_texture, i + 1)
-	
-	# Use candy against enemies
-	# Hit end turn button
+		$CandyContainer.add_item(Shared.get_candy_name_with_level(candy), candy_texture, true)
+
 
 
 func start_enemy_turn():
-	for enemy in $EnemyContainer.get_children():
+	for enemy in get_all_enemies():
 		enemy.attack(player_ref)
 		
-	for enemy in $EnemyContainer.get_children():
+	for enemy in get_all_enemies():
 		enemy.reset()
 	
 	start_player_turn()
 
+func get_all_enemies() -> Array[CharacterBase]:
+	var enemy_children: Array[CharacterBase] = []
+	for child in $EnemyContainer.get_children():
+		if child is Enemy:
+			enemy_children.append(child)
+	
+	return enemy_children
 
 func _on_done_pressed() -> void:
 	start_enemy_turn()
 
 func _on_enemy_press(enemy: Enemy):
-	var all_enemies = $EnemyContainer.get_children()
+	var all_enemies = get_all_enemies()
 	on_activate_candy(enemy, all_enemies)
 
 func _on_player_pressed() -> void:
 	on_activate_candy(player_ref, [player_ref])
 
-func on_activate_candy(target: Node, all_targets: Array[Node]):
+func on_activate_candy(target: CharacterBase, all_targets: Array[CharacterBase]):
 	var possible_index = $CandyContainer.get_selected_items()
 	if possible_index.size() == 0:
 		return
@@ -131,7 +148,41 @@ func _process(delta: float) -> void:
 		return
 		
 	if $EnemyContainer.get_children().size() == 0:
-		finish()
+		show_rewards()
 
 	if player_ref.health <= 0:
 		finish(false)
+		
+		
+func setup_rewards(type: Shared.HOUSE_TYPE):
+	for i in 3:
+		var random_candy_level = randf_range(0.0, 1.0)
+		var rich = type == Shared.HOUSE_TYPE.RICH
+		var fun_size = 0.1 if rich else 0.6
+		var regular_size = 0.5 if rich else 0.85
+		var king_size = 0.9 if rich else 0.95
+		
+		if random_candy_level <= fun_size:
+			add_reward(Shared.CandyLevel.FUN_SIZE)
+		elif random_candy_level <= regular_size:
+			add_reward(Shared.CandyLevel.REGULAR_SIZE)
+		elif random_candy_level <= king_size:
+			add_reward(Shared.CandyLevel.KING_SIZE)
+		else:
+			add_reward(Shared.CandyLevel.PARTY_SIZE)
+
+	
+func add_reward(level: Shared.CandyLevel):
+	var candy = Shared.get_random_candy(level)
+	rewards.push_back(candy)
+	var texture = Shared.get_candy_texture(candy.texture_path)
+	$RewardContainer/CandyPicker.add_item(Shared.get_candy_name_with_level(candy), texture, true)
+	
+func show_rewards():
+	$RewardContainer.show()
+
+
+func _on_candy_picker_item_selected(index: int) -> void:
+	var selected_reward_candy = rewards[index]
+	player_ref.basket.push_back(selected_reward_candy)
+	finish()

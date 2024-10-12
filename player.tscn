@@ -19,6 +19,7 @@ texture_normal = ExtResource("2_jtomn")
 script = ExtResource("1_t82bl")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
+layout_mode = 0
 offset_left = 13.0
 offset_top = -2.0
 offset_right = 119.0

@@ -218,7 +218,6 @@ func _on_house_21_pressed() -> void:
 
 func _on_boss_house_pressed() -> void:
 	boss_selected.emit()
-	finish.emit()
 	
 const DONT_DISABLE_CHILDREN = ['Home', 'House 1', 'Map']
 
