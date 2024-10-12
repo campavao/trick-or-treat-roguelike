@@ -171,7 +171,7 @@ func add_candy_details(base: Dictionary, yum: int, texture_path: String):
 	base['texture_path'] = texture_path
 
 func get_random_candy(level: CandyLevel = CandyLevel.FUN_SIZE):
-	var enum_size = Candy.size()
+	var enum_size = Candy.size() - 1
 	var random_index = int(randf() * enum_size)  # randf() gives a float in the range [0.0, 1.0)
 	return get_candy(random_index, level)
 

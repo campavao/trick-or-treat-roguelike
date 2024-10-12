@@ -5,7 +5,7 @@
 [node name="FriendsHouse" type="Node2D"]
 script = ExtResource("1_n13e4")
 
-[node name="Label" type="Label" parent="."]
+[node name="ActionLabel" type="Label" parent="."]
 offset_left = 12.0
 offset_top = 30.0
 offset_right = 1145.0
@@ -13,7 +13,7 @@ offset_bottom = 53.0
 text = "Select a candy to upgrade"
 horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="."]
+[node name="SkipButton" type="Button" parent="."]
 offset_left = 533.0
 offset_top = 603.0
 offset_right = 616.0
@@ -22,6 +22,7 @@ text = "Skip
 "
 
 [node name="Inventory" type="ItemList" parent="."]
+visible = false
 offset_left = 2.0
 offset_top = 79.0
 offset_right = 1149.0
@@ -31,5 +32,21 @@ same_column_width = true
 icon_mode = 0
 metadata/_edit_lock_ = true
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[node name="RemoveButton" type="Button" parent="."]
+offset_left = 656.0
+offset_top = 308.0
+offset_right = 825.0
+offset_bottom = 366.0
+text = "Remove a candy"
+
+[node name="UpgradeButton" type="Button" parent="."]
+offset_left = 312.0
+offset_top = 305.0
+offset_right = 499.0
+offset_bottom = 367.0
+text = "Upgrade a candy"
+
+[connection signal="pressed" from="SkipButton" to="." method="_on_button_pressed"]
 [connection signal="item_selected" from="Inventory" to="." method="_on_inventory_item_selected"]
+[connection signal="pressed" from="RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="UpgradeButton" to="." method="_on_upgrade_button_pressed"]
