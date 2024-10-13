@@ -22,6 +22,8 @@ var selected_candy: CandyClass
 
 var max_amount_of_enemies := 4
 
+var can_use_first_candy_twice := false
+
 func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int):
 	show()
 
@@ -90,6 +92,11 @@ func setup_enemies(type: Shared.HOUSE_TYPE):
 		$EnemyContainer.add_child(enemy)
 
 func start_player_turn():
+	if player_ref.start_turn_shield_amount > 0:
+		player_ref.protect(player_ref.start_turn_shield_amount)
+		
+	can_use_first_candy_twice = true
+		
 	# Render candy from basket
 	for i in player_ref.hand_size:
 		var candy = basket_ref.pop_back()
@@ -155,6 +162,10 @@ func on_activate_candy(target: CharacterBase, all_targets: Array[CharacterBase])
 	$CandyContainer.remove_item(selected_candy_index)
 	var candy = hand.pop_at(selected_candy_index)
 	candy.use(target, all_targets)
+	if player_ref.use_first_candy_twice and can_use_first_candy_twice:
+		candy.use(target, all_targets)
+		can_use_first_candy_twice = false
+		
 	used_candy.push_back(candy)
 
 func _process(_delta: float) -> void:

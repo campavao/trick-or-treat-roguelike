@@ -1,45 +1,13 @@
 extends Node2D
 
 signal complete()
+signal upgrade_candy(amount: int)
+signal remove_candy(amount: int)
+signal duplicate_candy(amount: int)
+signal downgrade_candy(amount: int)
 
-# Possible treats
-# - Increase max health
-# - Increase hand size
-# - Upgrade a candy
-# - Gain a shield at start of turn
-# - Duplicate a candy
-# - Remove a candy
-# - Make first candy played activate twice
-# - Skip next house
-
-# Possible side effects
-# - Decrease max health
-# - Decrease hand size
-# - Downgrade a candy
-# - Trigger fight
-# - Take damage
-
-enum TREAT_TYPES {
-	INCREASE_MAX_HEALTH,
-	INCREASE_HAND_SIZE,
-	UPGRADE_CANDY,
-	GAIN_SHIELD,
-	DUPE_CANDY,
-	MAKE_FIRST_CANDY_ACTIVATE_TWICE,
-	SKIP_NEXT_HOUSE,
-	HEAL,
-	NONE,
-}
-
-enum SIDE_EFFECTS {
-	DECREASE_MAX_HEALTH,
-	DECREASE_HAND_SIZE,
-	DOWNGRADE_CANDY,
-	REMOVE_CANDY,
-	TRIGGER_FIGHT,
-	TAKE_DAMAGE,
-	NONE,
-}
+const TREAT_TYPES = Shared.TREAT_TYPES
+const SIDE_EFFECTS = Shared.SIDE_EFFECTS
 
 const TREAT_DATA = {
 	TREAT_TYPES.INCREASE_MAX_HEALTH: {
@@ -114,6 +82,9 @@ const SIDE_EFFECT_DATA = {
 var options: Array[TreatOption] = []
 var player_ref: Player
 
+var current_effect: TREAT_TYPES
+var current_side_effect: SIDE_EFFECTS
+
 func enable(player: Player, type: Shared.HOUSE_TYPE):
 	player_ref = player
 	show()
@@ -176,18 +147,21 @@ func _on_options_item_selected(index: int) -> void:
 			var value = get_treat_value(option.type, option.enhanced)
 			player_ref.hand_size += value
 		TREAT_TYPES.UPGRADE_CANDY:
-			pass
+			var value = get_treat_value(option.type, option.enhanced)
+			upgrade_candy.emit(value)
 		TREAT_TYPES.GAIN_SHIELD:
-			pass
+			var value = get_treat_value(option.type, option.enhanced)
+			player_ref.start_turn_shield_amount = value
 		TREAT_TYPES.DUPE_CANDY:
-			pass
+			var value = get_treat_value(option.type, option.enhanced)
+			duplicate_candy.emit(value)
 		TREAT_TYPES.MAKE_FIRST_CANDY_ACTIVATE_TWICE:
-			pass
+			player_ref.use_first_candy_twice = true
 		TREAT_TYPES.SKIP_NEXT_HOUSE:
-			pass
+			player_ref.skip_next_house = true
 		TREAT_TYPES.HEAL:
 			var value = get_treat_value(option.type, option.enhanced)
-			player_ref.health += value
+			player_ref.heal(value)
 		TREAT_TYPES.NONE:
 			pass
 
@@ -200,9 +174,11 @@ func _on_options_item_selected(index: int) -> void:
 			var value = get_side_effect_value(option.side_effect, option.enhanced)
 			player_ref.hand_size -= value
 		SIDE_EFFECTS.DOWNGRADE_CANDY:
-			pass
+			var value = get_side_effect_value(option.side_effect, option.enhanced)
+			downgrade_candy.emit(value)
 		SIDE_EFFECTS.REMOVE_CANDY:
-			pass
+			var value = get_side_effect_value(option.side_effect, option.enhanced)
+			remove_candy.emit(value)
 		SIDE_EFFECTS.TRIGGER_FIGHT:
 			pass
 		SIDE_EFFECTS.TAKE_DAMAGE:
@@ -218,3 +194,7 @@ func get_treat_value(type: TREAT_TYPES, enhanced: bool):
 
 func get_side_effect_value(type: SIDE_EFFECTS, enhanced: bool):
 	return SIDE_EFFECT_DATA[type].value if not enhanced else SIDE_EFFECT_DATA[type].value * 2
+
+
+
+	

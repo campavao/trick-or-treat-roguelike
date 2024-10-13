@@ -39,6 +39,10 @@ func _on_boss_complete() -> void:
 
 # House selected
 func _on_first_neighborhood_house_selected(houses_beaten: Dictionary) -> void:
+	if player.skip_next_house:
+		player.skip_next_house = false
+		return
+		
 	var is_trick = randi_range(0, 1)
 	if is_trick == 1:
 		var easy = houses_beaten.has('house_3')
@@ -51,6 +55,10 @@ func _on_first_neighborhood_house_selected(houses_beaten: Dictionary) -> void:
 	$"First Neighborhood".hide()
 
 func _on_first_neighborhood_rich_house_selected(houses_beaten: Dictionary) -> void:
+	if player.skip_next_house:
+		player.skip_next_house = false
+		return
+		
 	var is_trick = randi_range(0, 1)
 	if is_trick == 1:
 		var easy = houses_beaten.has('house_3')
@@ -63,6 +71,10 @@ func _on_first_neighborhood_rich_house_selected(houses_beaten: Dictionary) -> vo
 	$"First Neighborhood".hide()
 
 func _on_first_neighborhood_friends_house_selected() -> void:
+	if player.skip_next_house:
+		player.skip_next_house = false
+		return
+		
 	$FriendsHouse.enable(player)
 	$"First Neighborhood".hide()
 

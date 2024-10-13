@@ -72,3 +72,9 @@ func eat_again(amount):
 
 func protect(amount: int):
 	protection += amount
+
+func heal(amount: int):
+	health += abs(amount)
+	# Don't overfill health
+	if health > starting_health:
+		health = starting_health

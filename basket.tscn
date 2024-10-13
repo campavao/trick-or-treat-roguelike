@@ -34,6 +34,7 @@ offset_top = 58.0
 offset_right = 1084.0
 offset_bottom = 559.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ruf3o")
+allow_reselect = true
 allow_search = false
 max_text_lines = 12
 max_columns = 4
@@ -41,6 +42,17 @@ same_column_width = true
 fixed_column_width = 245
 icon_mode = 0
 icon_scale = 1.5
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_right = 1152.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 5
+text = "Choose a candy to upgrade"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="ViewBasketButton" to="." method="_on_view_basket_button_pressed"]
 [connection signal="toggled" from="ViewBasketButton" to="." method="_on_view_basket_button_toggled"]

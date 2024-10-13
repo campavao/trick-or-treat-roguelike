@@ -140,3 +140,19 @@ func level_up():
 			path_parts[3] = path_parts[3].replace("_king", "_party")
 
 	texture_path = "/".join(path_parts)
+	
+func level_down():
+	var path_parts = texture_path.split("/")
+
+	match level:
+		Level.REGULAR_SIZE:
+			level = Level.FUN_SIZE
+			path_parts[3] = path_parts[3].replace("_regular", "_fun")
+		Level.KING_SIZE:
+			level = Level.REGULAR_SIZE
+			path_parts[3] = path_parts[3].replace("_king", "_regular")
+		Level.PARTY_SIZE:
+			level = Level.KING_SIZE
+			path_parts[3] = path_parts[3].replace("_party", "_king")
+
+	texture_path = "/".join(path_parts)

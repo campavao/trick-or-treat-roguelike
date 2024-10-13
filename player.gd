@@ -7,14 +7,15 @@ const Candy = Shared.Candy
 var character: Characters
 var basket: Array[CandyClass]
 var hand_size := 4
+var use_first_candy_twice := false
+var skip_next_house := false
+var start_turn_shield_amount := 0
 
 func _init(state) -> void:
 	character = state["character"]
 	set_starting_health(20)
 
 	# 4 Unhealthy x 4 Healthy x 2 Special
-	var crunch_bar = Shared.get_candy(Shared.Candy.CRUNCH)
-	var fruit_gummy = Shared.get_candy(Shared.Candy.FRUIT_GUMMIES)
 
 	# Unhealthy
 	add_candies(Shared.Candy.CRUNCH, 4)

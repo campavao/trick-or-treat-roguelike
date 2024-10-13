@@ -217,3 +217,44 @@ enum HOUSE_TYPE {
 
 func proper_case(text):
 	return text[0].to_upper() + text.substr(1,-1)
+
+### Treats #####################################################################
+
+# Possible treats
+# - Increase max health
+# - Increase hand size
+# - Upgrade a candy
+# - Gain a shield at start of turn
+# - Duplicate a candy
+# - Remove a candy
+# - Make first candy played activate twice
+# - Skip next house
+
+# Possible side effects
+# - Decrease max health
+# - Decrease hand size
+# - Downgrade a candy
+# - Trigger fight
+# - Take damage
+
+enum TREAT_TYPES {
+	INCREASE_MAX_HEALTH,
+	INCREASE_HAND_SIZE,
+	UPGRADE_CANDY,
+	GAIN_SHIELD,
+	DUPE_CANDY,
+	MAKE_FIRST_CANDY_ACTIVATE_TWICE,
+	SKIP_NEXT_HOUSE,
+	HEAL,
+	NONE,
+}
+
+enum SIDE_EFFECTS {
+	DECREASE_MAX_HEALTH,
+	DECREASE_HAND_SIZE,
+	DOWNGRADE_CANDY,
+	REMOVE_CANDY,
+	TRIGGER_FIGHT,
+	TAKE_DAMAGE,
+	NONE,
+}
