@@ -11,7 +11,7 @@ var yum: int # if positive it's tasty, if negative it's healthy
 var texture_path: String
 
 func _init(props):
-	type = props['type'] if props['type'] else Candy.CRUNCH
+	type = props['type'] if props['type'] else Candy.REESES
 	level = props['level'] if props['level'] else Level.FUN_SIZE
 	yum = props['yum']
 	name = Shared.get_candy_name(type) # this should update the node's name in the tree

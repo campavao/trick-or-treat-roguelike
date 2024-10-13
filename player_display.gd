@@ -5,6 +5,8 @@ var player_ref: Player
 func _process(_delta):
 	if player_ref:
 		$HealthBar.value = player_ref.health
+		$HealthBar.max_value = player_ref.starting_health
+
 		$HealthBarLabel.text = str(player_ref.health) + " / " + str(player_ref.starting_health)
 		$ProtectionAmount.text = str(player_ref.protection)
 

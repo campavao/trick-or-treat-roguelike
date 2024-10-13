@@ -6,42 +6,41 @@ const Candy = Shared.Candy
 
 var character: Characters
 var basket: Array[CandyClass]
+var hand_size := 4
 
 func _init(state) -> void:
 	character = state["character"]
 	set_starting_health(20)
-	
+
 	# 4 Unhealthy x 4 Healthy x 2 Special
 	var crunch_bar = Shared.get_candy(Shared.Candy.CRUNCH)
 	var fruit_gummy = Shared.get_candy(Shared.Candy.FRUIT_GUMMIES)
 
 	# Unhealthy
-	add_candies(crunch_bar, 4)
+	add_candies(Shared.Candy.CRUNCH, 4)
 
 	# Healthy
-	add_candies(fruit_gummy, 4)
+	add_candies(Shared.Candy.FRUIT_GUMMIES, 4)
 
 	# Special
 	match character:
 		Shared.Characters.WARRIOR:
 			# Warrior (Michelanglo - TMNT)
 			# Special - Rock
-			var rock = Shared.get_candy(Shared.Candy.ROCK)
-			add_candies(rock)
+			add_candies(Shared.Candy.ROCK)
 
 		Shared.Characters.WIZARD:
 			# Wizard (Scorpian - Mortal Kombat)
 			# Special - Now and Later
-			var now_and_later = Shared.get_candy(Shared.Candy.NOW_AND_LATER)
-			add_candies(now_and_later)
+			add_candies(Shared.Candy.NOW_AND_LATER)
 
 		Shared.Characters.WITCH:
 			# Witch (Care bear)
 			# Special - Gummy bears
-			var gummy_bears = Shared.get_candy(Shared.Candy.GUMMY_BEARS)
-			add_candies(gummy_bears)
-			
+			add_candies(Shared.Candy.GUMMY_BEARS)
 
-func add_candies(candy, amount = 2):
+
+func add_candies(candy_type: Shared.Candy, amount = 2):
 	for i in amount:
+		var candy = Shared.get_candy(candy_type)
 		basket.push_back(candy)

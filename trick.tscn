@@ -22,10 +22,10 @@ offset_bottom = 51.0
 text = "Trick"
 
 [node name="Done" type="Button" parent="."]
-offset_left = 1024.0
-offset_top = 32.0
-offset_right = 1107.0
-offset_bottom = 63.0
+offset_left = 1023.0
+offset_top = 523.0
+offset_right = 1106.0
+offset_bottom = 554.0
 text = "Done"
 
 [node name="Player" parent="." instance=ExtResource("2_a3fo8")]
@@ -43,11 +43,10 @@ theme_override_constants/separation = 20
 
 [node name="CandyContainer" type="ItemList" parent="."]
 custom_minimum_size = Vector2(64, 0)
-offset_left = 28.0
-offset_top = 491.0
-offset_right = 1129.0
-offset_bottom = 624.0
-tooltip_text = "Hello"
+offset_left = 23.0
+offset_top = 497.0
+offset_right = 994.0
+offset_bottom = 630.0
 theme_override_constants/h_separation = 22
 theme_override_font_sizes/font_size = 8
 theme_override_styles/focus = SubResource("StyleBoxEmpty_e0l03")
@@ -59,9 +58,9 @@ max_columns = 16
 same_column_width = true
 icon_mode = 0
 icon_scale = 1.5
+fixed_icon_size = Vector2i(32, 64)
 
 [node name="RewardContainer" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1153.0
@@ -84,12 +83,13 @@ text = "Skip"
 
 [node name="CandyPicker" type="ItemList" parent="RewardContainer"]
 layout_mode = 2
-offset_left = 334.0
+offset_left = 389.0
 offset_top = 184.0
 offset_right = 1150.0
 offset_bottom = 410.0
 size_flags_horizontal = 5
 size_flags_vertical = 3
+theme_override_constants/h_separation = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_n4m73")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_qhufn")
 allow_search = false
@@ -97,6 +97,7 @@ max_columns = 3
 same_column_width = true
 icon_mode = 0
 icon_scale = 2.0
+fixed_icon_size = Vector2i(32, 64)
 
 [connection signal="pressed" from="Done" to="." method="_on_done_pressed"]
 [connection signal="pressed" from="Player" to="." method="_on_player_pressed"]

@@ -8,6 +8,8 @@ func _on_start_character_select(character: Characters) -> void:
 	player = Player.new({ "character": character })
 	$CharacterName.text = Shared.get_character_name(character)
 	$"First Neighborhood".start()
+	$Basket.player = player
+	$Basket.show()
 
 func _on_first_neighborhood_finish() -> void:
 	$"First Neighborhood".hide()
@@ -16,6 +18,7 @@ func _on_first_neighborhood_finish() -> void:
 
 func _on_finish_start_over() -> void:
 	$Start.show()
+	$Basket.hide()
 
 # House complete
 func _on_trick_complete() -> void:
@@ -35,22 +38,28 @@ func _on_boss_complete() -> void:
 	$Finish.enable(true, player.character)
 
 # House selected
-func _on_first_neighborhood_house_selected() -> void:
+func _on_first_neighborhood_house_selected(houses_beaten: Dictionary) -> void:
 	var is_trick = randi_range(0, 1)
 	if is_trick == 1:
-		$Trick.enable(player, Shared.HOUSE_TYPE.NORMAL)
+		var easy = houses_beaten.has('house_3')
+		var medium = houses_beaten.has('house_10')
+		var max_amount_of_enemies = 4 if medium else 3 if easy else 2
+		$Trick.enable(player, Shared.HOUSE_TYPE.NORMAL, max_amount_of_enemies)
 	else:
 		$Treat.enable(player, Shared.HOUSE_TYPE.NORMAL)
 
 	$"First Neighborhood".hide()
 
-func _on_first_neighborhood_rich_house_selected() -> void:
+func _on_first_neighborhood_rich_house_selected(houses_beaten: Dictionary) -> void:
 	var is_trick = randi_range(0, 1)
 	if is_trick == 1:
-		$Trick.enable(player, Shared.HOUSE_TYPE.RICH)
+		var easy = houses_beaten.has('house_3')
+		var medium = houses_beaten.has('house_10')
+		var max_amount_of_enemies = 4 if medium else 3 if easy else 2
+		$Trick.enable(player, Shared.HOUSE_TYPE.RICH, max_amount_of_enemies)
 	else:
 		$Treat.enable(player, Shared.HOUSE_TYPE.RICH)
-		
+
 	$"First Neighborhood".hide()
 
 func _on_first_neighborhood_friends_house_selected() -> void:
@@ -64,7 +73,8 @@ func _on_first_neighborhood_boss_selected() -> void:
 func _process(_delta):
 	if player == null or $Finish.visible:
 		return
-	
+
 	if player.health <= 0:
 		$Finish.enable(false, player.character)
 		player = null
+		$Basket.hide()

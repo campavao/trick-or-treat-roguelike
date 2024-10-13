@@ -6,6 +6,7 @@
 script = ExtResource("1_n13e4")
 
 [node name="ActionLabel" type="Label" parent="."]
+visible = false
 offset_left = 12.0
 offset_top = 30.0
 offset_right = 1145.0

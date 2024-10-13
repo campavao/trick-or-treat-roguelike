@@ -19,12 +19,15 @@ func populate_inventory():
 		# Don't allow upgrading max level candy
 		if is_upgrading and candy.level == Shared.CandyLevel.PARTY_SIZE:
 			return
-			
-		var texture = Shared.get_candy_texture(candy.texture_path)
+
+		var texture = Shared.get_candy_texture(candy)
 		var index = $Inventory.add_item(candy.name, texture, true)
 		$Inventory.set_item_tooltip(index, Shared.get_candy_tooltip(candy))
 		$Inventory.set_item_tooltip_enabled(index, true)
-	
+
+	var action_text = "Upgrade" if is_upgrading else "Remove"
+	$ActionLabel.text = action_text + " a candy"
+	$ActionLabel.show()
 	$Inventory.show()
 
 func _on_inventory_item_selected(index: int) -> void:
@@ -33,6 +36,7 @@ func _on_inventory_item_selected(index: int) -> void:
 		candy.level_up()
 	else:
 		player_ref.basket.remove_at(index)
+		
 	reset()
 
 func reset():
@@ -40,6 +44,7 @@ func reset():
 	complete.emit()
 	$Inventory.clear()
 	$Inventory.hide()
+	$ActionLabel.hide()
 	$RemoveButton.show()
 	$UpgradeButton.show()
 
@@ -48,12 +53,12 @@ func _on_upgrade_button_pressed() -> void:
 	is_upgrading = true
 	hide_options()
 	populate_inventory()
-	
+
 func _on_remove_button_pressed() -> void:
 	is_upgrading = false
 	hide_options()
 	populate_inventory()
-	
+
 func hide_options():
 	$RemoveButton.hide()
 	$UpgradeButton.hide()

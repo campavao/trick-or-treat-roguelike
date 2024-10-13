@@ -20,8 +20,12 @@ var rewards: Array[CandyClass]
 
 var selected_candy: CandyClass
 
-func enable(player: Player, type: Shared.HOUSE_TYPE):
+var max_amount_of_enemies := 4
+
+func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int):
 	show()
+
+	max_amount_of_enemies = max_amount
 
 	# Reference the current player
 	player_ref = player
@@ -45,7 +49,7 @@ func _on_button_pressed() -> void:
 func finish(is_complete: bool = true):
 	hide()
 	reset_enemies()
-	clear_hand()
+	reset_hand()
 	clear_rewards()
 
 	if is_complete:
@@ -63,7 +67,7 @@ func reset_basket(source: Array[CandyClass], clear: bool = false):
 
 	basket_ref.shuffle()
 
-func clear_hand():
+func reset_hand():
 	$CandyContainer.clear()
 	hand.clear()
 	used_candy.clear()
@@ -74,19 +78,20 @@ func clear_rewards():
 	rewards.clear()
 
 func setup_enemies(type: Shared.HOUSE_TYPE):
-	var amount = randi_range(1, 4) # Random int between 1 and 4
+	var amount = randi_range(1, max_amount_of_enemies) # Random int between 1 and 4
 	for i in amount:
 		var enemy = ENEMY_SCENE.instantiate()
 		var is_rich = type == Shared.HOUSE_TYPE.RICH
 		var rich_multiplier = 2 if is_rich else 1
 		enemy.initialize(20 * rich_multiplier, 2 * rich_multiplier, is_rich)
 		enemy.connect('selected', _on_enemy_press)
+		enemy.name = "Enemy_" + str(i)
 
 		$EnemyContainer.add_child(enemy)
 
 func start_player_turn():
 	# Render candy from basket
-	for i in 4:
+	for i in player_ref.hand_size:
 		var candy = basket_ref.pop_back()
 
 		# Out of candy, shuffle in the used pile
@@ -100,14 +105,20 @@ func start_player_turn():
 				return
 
 		hand.push_back(candy)
-		var candy_texture = Shared.get_candy_texture(candy.texture_path)
+		var candy_texture = Shared.get_candy_texture(candy)
 		var index = $CandyContainer.add_item(candy.name, candy_texture, true)
 		$CandyContainer.set_item_tooltip(index, Shared.get_candy_tooltip(candy))
 		$CandyContainer.set_item_tooltip_enabled(index, true)
 
+func clear_hand():
+	$CandyContainer.clear()
+	used_candy.push_back(hand)
+	hand.clear()
 
 
 func start_enemy_turn():
+	clear_hand()
+
 	for enemy in get_all_enemies():
 		enemy.attack(player_ref)
 
@@ -178,7 +189,7 @@ func setup_rewards(type: Shared.HOUSE_TYPE):
 func add_reward(level: Shared.CandyLevel):
 	var candy = Shared.get_random_candy(level)
 	rewards.push_back(candy)
-	var texture = Shared.get_candy_texture(candy.texture_path)
+	var texture = Shared.get_candy_texture(candy)
 	var index = $RewardContainer/CandyPicker.add_item(candy.name, texture, true)
 	$RewardContainer/CandyPicker.set_item_tooltip(index, Shared.get_candy_tooltip(candy))
 	$RewardContainer/CandyPicker.set_item_tooltip_enabled(index, true)

@@ -36,6 +36,7 @@ value = 20.0
 show_percentage = false
 
 [node name="HealthBarLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 44.0
 offset_top = -19.0
 offset_right = 87.0
@@ -50,6 +51,7 @@ metadata/_edit_group_ = true
 
 [node name="ProtectionAmount" type="Label" parent="."]
 visible = false
+layout_mode = 0
 offset_left = 128.0
 offset_top = -21.0
 offset_right = 156.0

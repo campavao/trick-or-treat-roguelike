@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqfnki564rivc"]
+
+[ext_resource type="Script" path="res://basket.gd" id="1_casnr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ruf3o"]
+bg_color = Color(0.103456, 0.0869405, 0.0490515, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 16
+
+[node name="Basket" type="Node2D"]
+script = ExtResource("1_casnr")
+
+[node name="ViewBasketButton" type="Button" parent="."]
+offset_left = 1006.0
+offset_top = 585.0
+offset_right = 1126.0
+offset_bottom = 627.0
+toggle_mode = true
+text = "View Basket"
+
+[node name="CandyList" type="ItemList" parent="."]
+visible = false
+offset_left = 63.0
+offset_top = 58.0
+offset_right = 1084.0
+offset_bottom = 559.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ruf3o")
+allow_search = false
+max_text_lines = 12
+max_columns = 4
+same_column_width = true
+fixed_column_width = 245
+icon_mode = 0
+icon_scale = 1.5
+
+[connection signal="pressed" from="ViewBasketButton" to="." method="_on_view_basket_button_pressed"]
+[connection signal="toggled" from="ViewBasketButton" to="." method="_on_view_basket_button_toggled"]
+[connection signal="item_selected" from="CandyList" to="." method="_on_candy_list_item_selected"]

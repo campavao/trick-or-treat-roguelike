@@ -171,19 +171,18 @@ func add_candy_details(base: Dictionary, yum: int, texture_path: String):
 	base['texture_path'] = texture_path
 
 func get_random_candy(level: CandyLevel = CandyLevel.FUN_SIZE):
-	var enum_size = Candy.size() - 1
-	var random_index = int(randf() * enum_size)  # randf() gives a float in the range [0.0, 1.0)
+	var enum_size = Candy.size()
+	print(enum_size)
+	var random_index = randi_range(0, enum_size - 1) 
 	return get_candy(random_index, level)
 
 
-const FALLBACK_IMAGE = preload('res://art/candy/reeses_fun.png')
-
-func get_candy_texture(path: String):
-	var texture = load(path)
+func get_candy_texture(candy: CandyClass):
+	var texture = load(candy.texture_path)
 
 	if texture == null:
-		print("No image found for: ", path)
-		texture = FALLBACK_IMAGE
+		print("No image found for: ", candy.texture_path)
+		texture = load(get_candy_texture_path("reeses", candy.level))
 
 	return texture
 
@@ -213,3 +212,8 @@ enum HOUSE_TYPE {
 	NORMAL,
 	RICH
 }
+
+### Helpers ####################################################################
+
+func proper_case(text):
+	return text[0].to_upper() + text.substr(1,-1)

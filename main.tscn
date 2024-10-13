@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dwse3p47iejxf"]
+[gd_scene load_steps=10 format=3 uid="uid://dwse3p47iejxf"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_jh07u"]
 [ext_resource type="PackedScene" uid="uid://sor8vi6v7mmo" path="res://start.tscn" id="2_dr4qm"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cxki5fuuoo7pv" path="res://treat.tscn" id="6_4q1jd"]
 [ext_resource type="PackedScene" uid="uid://byfx5xfyxhh3b" path="res://friends_house.tscn" id="7_s635j"]
 [ext_resource type="PackedScene" uid="uid://dktoxmunlu514" path="res://boss.tscn" id="8_rgo3n"]
+[ext_resource type="PackedScene" uid="uid://cqfnki564rivc" path="res://basket.tscn" id="9_ctemt"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_jh07u")
@@ -36,6 +37,9 @@ visible = false
 visible = false
 
 [node name="Boss" parent="." instance=ExtResource("8_rgo3n")]
+visible = false
+
+[node name="Basket" parent="." instance=ExtResource("9_ctemt")]
 visible = false
 
 [connection signal="character_select" from="Start" to="." method="_on_start_character_select"]
