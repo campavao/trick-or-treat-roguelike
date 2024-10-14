@@ -173,7 +173,7 @@ func add_candy_details(base: Dictionary, yum: int, texture_path: String):
 func get_random_candy(level: CandyLevel = CandyLevel.FUN_SIZE):
 	var enum_size = Candy.size()
 	print(enum_size)
-	var random_index = randi_range(0, enum_size - 1) 
+	var random_index = randi_range(0, enum_size - 1)
 	return get_candy(random_index, level)
 
 
@@ -210,7 +210,8 @@ func get_candy_tooltip(candy: CandyClass):
 
 enum HOUSE_TYPE {
 	NORMAL,
-	RICH
+	RICH,
+	BOSS
 }
 
 ### Helpers ####################################################################

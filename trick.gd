@@ -1,6 +1,6 @@
 extends Node2D
 
-signal complete()
+signal complete(is_boss_house: bool)
 
 const ENEMY_SCENE = preload('res://enemy.tscn')
 
@@ -24,17 +24,25 @@ var max_amount_of_enemies := 4
 
 var can_use_first_candy_twice := false
 
-func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int):
+var is_boss_house := false
+
+var base_health := 20
+var base_attack := 2
+
+func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int, difficulty_multiplier: int, health: int = base_health, attack: int = base_attack):
 	show()
 
 	max_amount_of_enemies = max_amount
-
+	is_boss_house = type == Shared.HOUSE_TYPE.BOSS
+	base_health = health
+	base_attack = attack
+	
 	# Reference the current player
 	player_ref = player
 	reset_basket(player.basket)
 
 	# Setup enemy
-	setup_enemies(type)
+	setup_enemies(type, difficulty_multiplier)
 
 	# Setup player
 	$Player.init(player)
@@ -55,7 +63,7 @@ func finish(is_complete: bool = true):
 	clear_rewards()
 
 	if is_complete:
-		complete.emit()
+		complete.emit(is_boss_house)
 
 func reset_enemies():
 	for enemy in $EnemyContainer.get_children():
@@ -79,13 +87,28 @@ func clear_rewards():
 	$RewardContainer/CandyPicker.clear()
 	rewards.clear()
 
-func setup_enemies(type: Shared.HOUSE_TYPE):
+func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int):
 	var amount = randi_range(1, max_amount_of_enemies) # Random int between 1 and 4
 	for i in amount:
 		var enemy = ENEMY_SCENE.instantiate()
 		var is_rich = type == Shared.HOUSE_TYPE.RICH
 		var rich_multiplier = 2 if is_rich else 1
-		enemy.initialize(20 * rich_multiplier, 2 * rich_multiplier, is_rich)
+		match type:
+			Shared.HOUSE_TYPE.NORMAL:
+				rich_multiplier = 1
+			Shared.HOUSE_TYPE.RICH:
+				rich_multiplier = 2
+			Shared.HOUSE_TYPE.BOSS:
+				rich_multiplier = 4
+
+		var standard_health_multiplier = base_health * difficulty_multiplier
+		var standard_attack_multiplier = base_attack * difficulty_multiplier
+		var health = standard_health_multiplier * rich_multiplier
+		var attack = standard_attack_multiplier * rich_multiplier
+
+		print("health: ", health, " attack: ", attack)
+
+		enemy.initialize(health, attack, is_rich)
 		enemy.connect('selected', _on_enemy_press)
 		enemy.name = "Enemy_" + str(i)
 
@@ -94,9 +117,9 @@ func setup_enemies(type: Shared.HOUSE_TYPE):
 func start_player_turn():
 	if player_ref.start_turn_shield_amount > 0:
 		player_ref.protect(player_ref.start_turn_shield_amount)
-		
+
 	can_use_first_candy_twice = true
-		
+
 	# Render candy from basket
 	for i in player_ref.hand_size:
 		var candy = basket_ref.pop_back()
@@ -165,7 +188,7 @@ func on_activate_candy(target: CharacterBase, all_targets: Array[CharacterBase])
 	if player_ref.use_first_candy_twice and can_use_first_candy_twice:
 		candy.use(target, all_targets)
 		can_use_first_candy_twice = false
-		
+
 	used_candy.push_back(candy)
 
 func _process(_delta: float) -> void:
@@ -173,6 +196,10 @@ func _process(_delta: float) -> void:
 		return
 
 	if $EnemyContainer.get_children().size() == 0:
+		# no rewards after boss house (for mvp)
+		if is_boss_house:
+			finish()
+
 		show_rewards()
 
 	if player_ref.health <= 0:

@@ -1,7 +1,7 @@
 extends Node2D
 
 signal finish()
-signal house_selected(houses_beaten: Dictionary)
+signal house_selected()
 signal friends_house_selected()
 signal rich_house_selected()
 signal boss_selected()
@@ -20,7 +20,7 @@ func _on_house_1_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 2".disabled = false
 
 
@@ -37,7 +37,7 @@ func _on_house_3_pressed() -> void:
 	var is_beat = is_house_beaten('house_3')
 	if is_beat:
 		return
-	rich_house_selected.emit(houses_beaten)
+	rich_house_selected.emit()
 	$"House 4".disabled = false
 
 
@@ -46,7 +46,7 @@ func _on_house_4_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 5".disabled = false
 	$"House 6".disabled = false
 
@@ -56,7 +56,7 @@ func _on_house_5_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 7".disabled = false
 
 	# disable other route
@@ -68,7 +68,7 @@ func _on_house_6_pressed() -> void:
 	if is_beat:
 		return
 
-	rich_house_selected.emit(houses_beaten)
+	rich_house_selected.emit()
 	$"House 9".disabled = false
 
 	# disable other route
@@ -89,7 +89,7 @@ func _on_house_8_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 9".disabled = false
 
 
@@ -107,7 +107,7 @@ func _on_house_10_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 11".disabled = false
 	$"House 13".disabled = false
 
@@ -117,7 +117,7 @@ func _on_house_11_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 12".disabled = false
 
 	# disable other route
@@ -129,7 +129,7 @@ func _on_house_12_pressed() -> void:
 	if is_beat:
 		return
 
-	rich_house_selected.emit(houses_beaten)
+	rich_house_selected.emit()
 	$"House 15".disabled = false
 
 
@@ -150,7 +150,7 @@ func _on_house_14_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 16".disabled = false
 
 
@@ -168,7 +168,7 @@ func _on_house_16_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 17".disabled = false
 
 
@@ -177,7 +177,7 @@ func _on_house_17_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 18".disabled = false
 
 
@@ -186,7 +186,7 @@ func _on_house_18_pressed() -> void:
 	if is_beat:
 		return
 
-	rich_house_selected.emit(houses_beaten)
+	rich_house_selected.emit()
 	$"House 19".disabled = false
 
 func _on_house_19_pressed() -> void:
@@ -194,7 +194,7 @@ func _on_house_19_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 20".disabled = false
 
 
@@ -203,7 +203,7 @@ func _on_house_20_pressed() -> void:
 	if is_beat:
 		return
 
-	house_selected.emit(houses_beaten)
+	house_selected.emit()
 	$"House 21".disabled = false
 
 

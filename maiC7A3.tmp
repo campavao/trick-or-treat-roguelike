@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://dwse3p47iejxf"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_jh07u"]
+[ext_resource type="PackedScene" uid="uid://sor8vi6v7mmo" path="res://start.tscn" id="2_dr4qm"]
+[ext_resource type="PackedScene" uid="uid://3h0813qf2kmu" path="res://first_neighborhood.tscn" id="3_vvfwp"]
+[ext_resource type="PackedScene" uid="uid://mckyglko4hwu" path="res://finish.tscn" id="4_nict8"]
+[ext_resource type="PackedScene" uid="uid://dq0xeb67ygqvi" path="res://trick.tscn" id="5_s57jd"]
+[ext_resource type="PackedScene" uid="uid://cxki5fuuoo7pv" path="res://treat.tscn" id="6_4q1jd"]
+[ext_resource type="PackedScene" uid="uid://byfx5xfyxhh3b" path="res://friends_house.tscn" id="7_s635j"]
+[ext_resource type="PackedScene" uid="uid://dktoxmunlu514" path="res://boss.tscn" id="8_rgo3n"]
+[ext_resource type="PackedScene" uid="uid://cqfnki564rivc" path="res://basket.tscn" id="9_ctemt"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_jh07u")
+
+[node name="CharacterName" type="Label" parent="."]
+offset_left = 19.0
+offset_top = 17.0
+offset_right = 220.0
+offset_bottom = 92.0
+theme_override_font_sizes/font_size = 40
+
+[node name="Start" parent="." instance=ExtResource("2_dr4qm")]
+
+[node name="First Neighborhood" parent="." instance=ExtResource("3_vvfwp")]
+visible = false
+
+[node name="Finish" parent="." instance=ExtResource("4_nict8")]
+
+[node name="Trick" parent="." instance=ExtResource("5_s57jd")]
+visible = false
+
+[node name="Treat" parent="." instance=ExtResource("6_4q1jd")]
+visible = false
+
+[node name="FriendsHouse" parent="." instance=ExtResource("7_s635j")]
+visible = false
+
+[node name="Boss" parent="." instance=ExtResource("8_rgo3n")]
+visible = false
+
+[node name="Basket" parent="." instance=ExtResource("9_ctemt")]
+visible = false
+
+[connection signal="character_select" from="Start" to="." method="_on_start_character_select"]
+[connection signal="boss_selected" from="First Neighborhood" to="." method="_on_first_neighborhood_boss_selected"]
+[connection signal="finish" from="First Neighborhood" to="." method="_on_first_neighborhood_finish"]
+[connection signal="friends_house_selected" from="First Neighborhood" to="." method="_on_first_neighborhood_friends_house_selected"]
+[connection signal="house_selected" from="First Neighborhood" to="." method="_on_first_neighborhood_house_selected"]
+[connection signal="rich_house_selected" from="First Neighborhood" to="." method="_on_first_neighborhood_rich_house_selected"]
+[connection signal="start_over" from="Finish" to="." method="_on_finish_start_over"]
+[connection signal="complete" from="Trick" to="." method="_on_trick_complete"]
+[connection signal="complete" from="Treat" to="." method="_on_treat_complete"]
+[connection signal="downgrade_candy" from="Treat" to="Basket" method="_on_treat_downgrade_candy"]
+[connection signal="duplicate_candy" from="Treat" to="Basket" method="_on_treat_duplicate_candy"]
+[connection signal="remove_candy" from="Treat" to="Basket" method="_on_treat_remove_candy"]
+[connection signal="trigger_fight" from="Treat" to="." method="_on_treat_trigger_fight"]
+[connection signal="upgrade_candy" from="Treat" to="Basket" method="_on_treat_upgrade_candy"]
+[connection signal="complete" from="FriendsHouse" to="." method="_on_friends_house_complete"]
+[connection signal="complete" from="Boss" to="." method="_on_boss_complete"]

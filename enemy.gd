@@ -25,12 +25,15 @@ func initialize(init_health: int, starting_power: int, is_rich: bool):
 	$HealthBar.value = init_health
 	$HealthBar.max_value = init_health
 	$HealthBarLabel.text = str(init_health) + " / " + str(init_health)
+	$IntentLabel.show()
+
 
 func reset():
 	super.reset()
 
 	# pick next move
 	pick_next_move()
+	$IntentLabel.show()
 
 func attack(player):
 	if is_dazed or is_tied_up:
@@ -42,7 +45,7 @@ func attack(player):
 		MOVES.DEFEND:
 			health += power
 		MOVES.SPECIAL:
-			protect(2)
+			protect(power)
 
 func eat(amount: int):
 	super.eat(amount)
@@ -57,10 +60,12 @@ func die():
 
 func daze():
 	super.daze()
+	$IntentLabel.hide()
 	$NextMove.texture = preload('res://art/dazed_intent.png')
 
 func tie_up():
 	super.tie_up()
+	$IntentLabel.hide()
 	$NextMove.texture = preload('res://art/tied_up_intent.png')
 
 
@@ -89,6 +94,8 @@ func _process(_delta):
 	$HealthBar.value = health
 	$ProtectionAmount.text = str(protection)
 	$HealthBarLabel.text = str(health) + " / " + str(starting_health)
+	$IntentLabel.text = str(power)
+	
 	if protection > 0:
 		$ProtectionIcon.show()
 		$ProtectionAmount.show()
