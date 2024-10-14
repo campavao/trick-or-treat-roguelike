@@ -17,6 +17,7 @@ func reset_basket():
 	$CandyList.clear()
 
 func populate_from_basket():
+	reset_basket()
 	for candy in player.basket:
 		var is_disabled_from_effect = current_effect.type == Shared.TREAT_TYPES.UPGRADE_CANDY and candy.level == Shared.CandyLevel.PARTY_SIZE
 		var is_disabled_from_side_effect = side_effect.type == Shared.SIDE_EFFECTS.DOWNGRADE_CANDY and candy.level == Shared.CandyLevel.FUN_SIZE
@@ -68,7 +69,6 @@ func _on_candy_list_item_selected(index: int) -> void:
 
 func refresh():
 	# Reset basket
-	reset_basket()
 	populate_from_basket()
 	update_text()
 	

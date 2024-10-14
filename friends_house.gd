@@ -17,11 +17,11 @@ func _on_button_pressed() -> void:
 func populate_inventory():
 	for candy in player_ref.basket:
 		# Don't allow upgrading max level candy
-		if is_upgrading and candy.level == Shared.CandyLevel.PARTY_SIZE:
-			return
+		var is_disabled = is_upgrading and candy.level == Shared.CandyLevel.PARTY_SIZE
 
 		var texture = Shared.get_candy_texture(candy)
 		var index = $Inventory.add_item(candy.name, texture, true)
+		$Inventory.set_item_disabled(index, is_disabled)
 		$Inventory.set_item_tooltip(index, Shared.get_candy_tooltip(candy))
 		$Inventory.set_item_tooltip_enabled(index, true)
 

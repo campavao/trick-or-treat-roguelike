@@ -119,7 +119,7 @@ func start_player_turn():
 
 func clear_hand():
 	$CandyContainer.clear()
-	used_candy.push_back(hand)
+	used_candy.append_array(hand)
 	hand.clear()
 
 
