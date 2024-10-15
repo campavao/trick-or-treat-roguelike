@@ -86,7 +86,7 @@ func _on_first_neighborhood_friends_house_selected() -> void:
 	$"First Neighborhood".hide()
 
 func _on_first_neighborhood_boss_selected() -> void:
-	$Trick.health
+	$Trick.base_health = 40
 	$Trick.enable(player, Shared.HOUSE_TYPE.BOSS, 1, 1, 40, 4)
 
 	# $Boss.enable(player)
