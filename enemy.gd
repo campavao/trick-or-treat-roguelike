@@ -1,7 +1,10 @@
 extends CharacterBase
+
 class_name Enemy
 
 signal selected(enemy: Enemy)
+
+const fallback_texture = preload('res://art/skeleton.png')
 
 @export var is_dead := false
 @export var is_elite := false
@@ -16,8 +19,6 @@ enum MOVES {
 	DEFEND = 2
 }
 
-func _init(stats):
-	initialize(stats.health, stats.attack, stats.is_rich)
 
 func initialize(init_health: int, starting_power: int, is_rich: bool = false, texture_path: String = "res://art/enemy_1.png"):
 	name = "Enemy"
@@ -25,6 +26,12 @@ func initialize(init_health: int, starting_power: int, is_rich: bool = false, te
 
 	power = starting_power
 	is_elite = is_rich
+	print(texture_path)
+	scale = Vector2(2, 2)
+	texture_normal = load(texture_path)
+	
+	if texture_normal == null:
+		texture_normal = fallback_texture
 
 	set_starting_health(init_health)
 	$HealthBar.value = init_health

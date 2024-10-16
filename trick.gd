@@ -3,6 +3,9 @@ extends Node2D
 signal complete(is_boss_house: bool)
 
 const ENEMY_SCENE = preload('res://enemy.tscn')
+const HOUSE_BG = preload('res://art/house background.png')
+const RICH_HOUSE_BG = preload('res://art/rich house background.png')
+const BOSS_HOUSE_BG = preload('res://art/boss house background.png')
 
 var player_ref: Player
 
@@ -32,6 +35,15 @@ func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int, difficulty
 
 	max_amount_of_enemies = max_amount
 	is_boss_house = type == Shared.HOUSE_TYPE.BOSS
+		
+	match type:
+		Shared.HOUSE_TYPE.NORMAL:
+			$Background.texture = HOUSE_BG
+		Shared.HOUSE_TYPE.RICH:
+			$Background.texture = RICH_HOUSE_BG
+		Shared.HOUSE_TYPE.BOSS:
+			$Background.texture = BOSS_HOUSE_BG
+
 
 	# Reference the current player
 	player_ref = player
@@ -86,8 +98,10 @@ func clear_rewards():
 func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first_trick: bool = false):
 	# Pick set of enemies
 	var is_boss = type == Shared.HOUSE_TYPE.BOSS
-	var pair
-	var textures
+	var pair: Array
+	var textures: Array
+	
+	print(is_first_trick)
 
 	if is_first_trick:
 		pair = ENEMY_PAIRINGS[0]
@@ -100,10 +114,11 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 		pair = ENEMY_PAIRINGS[pair_index]
 		textures = ENEMY_PAIRINGS_TEXTURES[pair_index]
 
+	var texture_pack = textures.pick_random()
+	
 	# Populate with that set
-	var amount = randi_range(1, max_amount_of_enemies) # Random int between 1 and 4
-	for set in pair:
-		var index = pair.indexOf(set)
+	for set_of_enemies in pair:
+		var index = pair.bsearch(set_of_enemies, true)
 		var enemy = ENEMY_SCENE.instantiate()
 		var is_rich = type == Shared.HOUSE_TYPE.RICH
 		var rich_multiplier = 2 if is_rich else 1
@@ -113,12 +128,12 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 			Shared.HOUSE_TYPE.RICH, Shared.HOUSE_TYPE.BOSS:
 				rich_multiplier = 2
 
-		var standard_health_multiplier = set.health * difficulty_multiplier
-		var standard_attack_multiplier = set.attack * difficulty_multiplier
+		var standard_health_multiplier = set_of_enemies.health * difficulty_multiplier
+		var standard_attack_multiplier = set_of_enemies.attack * difficulty_multiplier
 		var health = standard_health_multiplier * rich_multiplier
 		var attack = standard_attack_multiplier * rich_multiplier
 
-		enemy.initialize(health, attack, is_rich, textures[index])
+		enemy.initialize(health, attack, is_rich, texture_pack[index])
 		enemy.connect('selected', _on_enemy_press)
 		enemy.name = "Enemy"
 
@@ -252,7 +267,7 @@ func _on_candy_picker_item_selected(index: int) -> void:
 	finish()
 
 
-const ENEMY_PAIRINGS = [
+const ENEMY_PAIRINGS: Array[Array] = [
 	[{"health": 10, "attack": 2}],
 	[{"health": 20, "attack": 2}, {"health": 20, "attack": 2}],
 	[{"health": 30, "attack": 3}, {"health": 30, "attack": 3}, {"health": 30, "attack": 3}],
@@ -262,11 +277,11 @@ const ENEMY_PAIRINGS = [
 
 
 const ENEMY_PAIRINGS_TEXTURES = [
-	[["res://art/enemy_1.png"]], # First enemy - Ghost or Skeleton or Zombie
-	[["res://art/enemy_2.png", "res://art/enemy_2.png"]], # Shrek and Donkey or Mario and Luigi or SpongeBob and Patrick
-	[["res://art/enemy_3.png", "res://art/enemy_3.png", "res://art/enemy_3.png"]], # Powerpuff Girls (Blossom, Bubbles, Buttercup) or Hades and demons
-	[["res://art/enemy_4.png", "res://art/enemy_4.png", "res://art/enemy_4.png", "res://art/enemy_4.png"]], # Scooby Doo (Scooby, Shaggy, Fred, Daphne)
-	[["res://art/enemy_5.png"]], # Knight
+	[["res://art/ghost.png"], ["res://art/skeleton.png"]], # First enemy - Ghost or Skeleton
+	[["res://art/shrek.png", "res://art/donkey.png"], ["res://art/mario.png", "res://art/luigi.png"], ["res://art/spongebob.png", "res://art/patrick.png"]], # Shrek and Donkey or Mario and Luigi or SpongeBob and Patrick
+	[["res://art/blossom.png", "res://art/bubbles.png", "res://art/buttercup.png"], ["res://art/hades.png", "res://art/demon.png", "res://art/demon.png"]], # Powerpuff Girls (Blossom, Bubbles, Buttercup) or Hades and demons
+	[["res://art/scooby.png", "res://art/shaggy.png", "res://art/fred.png", "res://art/daphne.png"]], # Scooby Doo (Scooby, Shaggy, Fred, Daphne)
+	[["res://art/homer.png"]], # Knight
 ]
 
 const BOSS_ENEMY_PAIRING = [{"health": 100, "attack": 10}]

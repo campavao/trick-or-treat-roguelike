@@ -1,4 +1,4 @@
-extends Node
+extends TextureButton
 class_name CharacterBase
 
 var starting_health: int = 10
