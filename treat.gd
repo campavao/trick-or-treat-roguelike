@@ -5,6 +5,7 @@ signal upgrade_candy(amount: int)
 signal remove_candy(amount: int)
 signal duplicate_candy(amount: int)
 signal downgrade_candy(amount: int)
+signal trigger_fight(type: Shared.HOUSE_TYPE)
 
 const TREAT_TYPES = Shared.TREAT_TYPES
 const SIDE_EFFECTS = Shared.SIDE_EFFECTS
@@ -127,6 +128,11 @@ class TreatOption:
 		if side_effect != SIDE_EFFECTS.NONE:
 			var value = SIDE_EFFECT_DATA[side_effect].value if not enhanced else SIDE_EFFECT_DATA[side_effect].value * 2
 			var value_text = " " + str(value) + " "
+			if side_effect == SIDE_EFFECTS.TRIGGER_FIGHT:
+				if value == 2:
+					value_text = " a rich house "
+				else:
+					value_text = " a house "
 			var info_text = value_text.join(SIDE_EFFECT_DATA[side_effect].text)
 
 			if not is_none_type:
@@ -180,7 +186,8 @@ func _on_options_item_selected(index: int) -> void:
 			var value = get_side_effect_value(option.side_effect, option.enhanced)
 			remove_candy.emit(value)
 		SIDE_EFFECTS.TRIGGER_FIGHT:
-			pass
+			var value = get_side_effect_value(option.side_effect, option.enhanced)
+			trigger_fight.emit(Shared.HOUSE_TYPE.RICH if value == 2 else Shared.HOUSE_TYPE.NORMAL)
 		SIDE_EFFECTS.TAKE_DAMAGE:
 			var value = get_side_effect_value(option.side_effect, option.enhanced)
 			player_ref.health -= value
@@ -194,7 +201,3 @@ func get_treat_value(type: TREAT_TYPES, enhanced: bool):
 
 func get_side_effect_value(type: SIDE_EFFECTS, enhanced: bool):
 	return SIDE_EFFECT_DATA[type].value if not enhanced else SIDE_EFFECT_DATA[type].value * 2
-
-
-
-	

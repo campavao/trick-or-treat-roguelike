@@ -1,4 +1,4 @@
-extends Node
+extends TextureButton
 class_name CharacterBase
 
 var starting_health: int = 10
@@ -24,7 +24,6 @@ func reset():
 	# Reset on start of turn
 	is_dazed = false
 	is_tied_up = false
-	protection = 0
 
 # If the amount is positive, we're taking damage
 # If the amount is negative, we're healing
@@ -71,6 +70,7 @@ func eat_again(amount):
 	eat_at_start_of_turn = amount
 
 func protect(amount: int):
+	print(self, " is protecting for ", amount)
 	protection += amount
 
 func heal(amount: int):

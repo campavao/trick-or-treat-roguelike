@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dq0xeb67ygqvi"]
+[gd_scene load_steps=8 format=3 uid="uid://dq0xeb67ygqvi"]
 
 [ext_resource type="Script" path="res://trick.gd" id="1_3sljv"]
 [ext_resource type="PackedScene" uid="uid://c4vi1t5xc3hty" path="res://player.tscn" id="2_a3fo8"]
+[ext_resource type="Texture2D" uid="uid://ck4hxmjn4i22q" path="res://art/house background.png" id="2_kai1r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e0l03"]
 
@@ -14,39 +15,37 @@
 [node name="Trick" type="Node2D"]
 script = ExtResource("1_3sljv")
 
-[node name="Label" type="Label" parent="."]
-offset_left = 543.0
-offset_top = 26.0
-offset_right = 584.0
-offset_bottom = 51.0
-text = "Trick"
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("2_kai1r")
 
 [node name="Done" type="Button" parent="."]
-offset_left = 1023.0
-offset_top = 523.0
-offset_right = 1106.0
-offset_bottom = 554.0
+offset_left = 54.0
+offset_top = 594.0
+offset_right = 137.0
+offset_bottom = 625.0
 text = "Done"
 
 [node name="Player" parent="." instance=ExtResource("2_a3fo8")]
-offset_left = 148.0
-offset_top = 238.0
-offset_right = 276.0
-offset_bottom = 366.0
+offset_left = 40.0
+offset_top = 403.0
+offset_right = 168.0
+offset_bottom = 531.0
 
 [node name="EnemyContainer" type="HBoxContainer" parent="."]
-offset_left = 565.0
-offset_top = 254.0
-offset_right = 1121.0
-offset_bottom = 375.0
+offset_left = 323.0
+offset_top = 394.0
+offset_right = 879.0
+offset_bottom = 515.0
 theme_override_constants/separation = 20
 
 [node name="CandyContainer" type="ItemList" parent="."]
 custom_minimum_size = Vector2(64, 0)
-offset_left = 23.0
-offset_top = 497.0
-offset_right = 994.0
-offset_bottom = 630.0
+offset_left = 33.0
+offset_top = 162.0
+offset_right = 565.0
+offset_bottom = 295.0
 theme_override_constants/h_separation = 22
 theme_override_font_sizes/font_size = 8
 theme_override_styles/focus = SubResource("StyleBoxEmpty_e0l03")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dq7b6a2c51nug"]
 
-[ext_resource type="Texture2D" uid="uid://dq1rxnov7cusx" path="res://art/warrior.png" id="1_6vqmo"]
+[ext_resource type="Texture2D" uid="uid://bitudkvumuu5f" path="res://art/skeleton.png" id="1_iqdel"]
 [ext_resource type="Script" path="res://enemy.gd" id="1_jd3w1"]
 [ext_resource type="Texture2D" uid="uid://8lxupw4eicnt" path="res://art/attack_intent.png" id="3_fab6k"]
 [ext_resource type="Texture2D" uid="uid://bn21uogr7abev" path="res://art/protection_intent.png" id="4_h4o5g"]
@@ -12,13 +12,10 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(0.6, 0, 0, 1)
 
 [node name="Enemy" type="TextureButton"]
-custom_minimum_size = Vector2(32, 0)
-offset_left = -66.0
-offset_top = -75.0
-offset_right = 62.0
-offset_bottom = 53.0
-texture_normal = ExtResource("1_6vqmo")
-flip_h = true
+offset_right = 128.0
+offset_bottom = 256.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("1_iqdel")
 script = ExtResource("1_jd3w1")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
@@ -27,10 +24,10 @@ anchors_preset = -1
 anchor_top = 0.156
 anchor_right = 0.93
 anchor_bottom = 1.0
-offset_left = 13.0
-offset_top = -40.968
-offset_right = -0.0400009
-offset_bottom = -122.0
+offset_left = 17.0
+offset_top = -60.936
+offset_right = 3.96
+offset_bottom = -253.0
 theme_override_styles/background = SubResource("StyleBoxFlat_214ns")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bo4u0")
 max_value = 20.0
@@ -68,5 +65,14 @@ offset_bottom = 2.0
 text = "0"
 horizontal_alignment = 1
 metadata/_edit_group_ = true
+
+[node name="IntentLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 36.0
+offset_top = -53.0
+offset_right = 76.0
+offset_bottom = -30.0
+text = "2"
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

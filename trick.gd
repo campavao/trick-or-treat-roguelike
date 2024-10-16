@@ -1,8 +1,11 @@
 extends Node2D
 
-signal complete()
+signal complete(is_boss_house: bool)
 
 const ENEMY_SCENE = preload('res://enemy.tscn')
+const HOUSE_BG = preload('res://art/house background.png')
+const RICH_HOUSE_BG = preload('res://art/rich house background.png')
+const BOSS_HOUSE_BG = preload('res://art/boss house background.png')
 
 var player_ref: Player
 
@@ -24,17 +27,30 @@ var max_amount_of_enemies := 4
 
 var can_use_first_candy_twice := false
 
-func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int):
+var is_boss_house := false
+
+
+func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int, difficulty_multiplier: int, is_first_trick: bool = false):
 	show()
 
 	max_amount_of_enemies = max_amount
+	is_boss_house = type == Shared.HOUSE_TYPE.BOSS
+		
+	match type:
+		Shared.HOUSE_TYPE.NORMAL:
+			$Background.texture = HOUSE_BG
+		Shared.HOUSE_TYPE.RICH:
+			$Background.texture = RICH_HOUSE_BG
+		Shared.HOUSE_TYPE.BOSS:
+			$Background.texture = BOSS_HOUSE_BG
+
 
 	# Reference the current player
 	player_ref = player
 	reset_basket(player.basket)
 
 	# Setup enemy
-	setup_enemies(type)
+	setup_enemies(type, difficulty_multiplier, is_first_trick)
 
 	# Setup player
 	$Player.init(player)
@@ -55,7 +71,7 @@ func finish(is_complete: bool = true):
 	clear_rewards()
 
 	if is_complete:
-		complete.emit()
+		complete.emit(is_boss_house)
 
 func reset_enemies():
 	for enemy in $EnemyContainer.get_children():
@@ -79,24 +95,56 @@ func clear_rewards():
 	$RewardContainer/CandyPicker.clear()
 	rewards.clear()
 
-func setup_enemies(type: Shared.HOUSE_TYPE):
-	var amount = randi_range(1, max_amount_of_enemies) # Random int between 1 and 4
-	for i in amount:
+func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first_trick: bool = false):
+	# Pick set of enemies
+	var is_boss = type == Shared.HOUSE_TYPE.BOSS
+	var pair: Array
+	var textures: Array
+	
+	print(is_first_trick)
+
+	if is_first_trick:
+		pair = ENEMY_PAIRINGS[0]
+		textures = ENEMY_PAIRINGS_TEXTURES[0]
+	elif is_boss:
+		pair = BOSS_ENEMY_PAIRING
+		textures = BOSS_ENEMY_PAIRING_TEXTURES
+	else:
+		var pair_index = randi_range(0, ENEMY_PAIRINGS.size() - 1) # Random int between 1 and 4
+		pair = ENEMY_PAIRINGS[pair_index]
+		textures = ENEMY_PAIRINGS_TEXTURES[pair_index]
+
+	var texture_pack = textures.pick_random()
+	
+	# Populate with that set
+	for set_of_enemies in pair:
+		var index = pair.bsearch(set_of_enemies, true)
 		var enemy = ENEMY_SCENE.instantiate()
 		var is_rich = type == Shared.HOUSE_TYPE.RICH
 		var rich_multiplier = 2 if is_rich else 1
-		enemy.initialize(20 * rich_multiplier, 2 * rich_multiplier, is_rich)
+		match type:
+			Shared.HOUSE_TYPE.NORMAL:
+				rich_multiplier = 1
+			Shared.HOUSE_TYPE.RICH, Shared.HOUSE_TYPE.BOSS:
+				rich_multiplier = 2
+
+		var standard_health_multiplier = set_of_enemies.health * difficulty_multiplier
+		var standard_attack_multiplier = set_of_enemies.attack * difficulty_multiplier
+		var health = standard_health_multiplier * rich_multiplier
+		var attack = standard_attack_multiplier * rich_multiplier
+
+		enemy.initialize(health, attack, is_rich, texture_pack[index])
 		enemy.connect('selected', _on_enemy_press)
-		enemy.name = "Enemy_" + str(i)
+		enemy.name = "Enemy"
 
 		$EnemyContainer.add_child(enemy)
 
 func start_player_turn():
 	if player_ref.start_turn_shield_amount > 0:
 		player_ref.protect(player_ref.start_turn_shield_amount)
-		
+
 	can_use_first_candy_twice = true
-		
+
 	# Render candy from basket
 	for i in player_ref.hand_size:
 		var candy = basket_ref.pop_back()
@@ -119,7 +167,7 @@ func start_player_turn():
 
 func clear_hand():
 	$CandyContainer.clear()
-	used_candy.push_back(hand)
+	used_candy.append_array(hand)
 	hand.clear()
 
 
@@ -165,7 +213,7 @@ func on_activate_candy(target: CharacterBase, all_targets: Array[CharacterBase])
 	if player_ref.use_first_candy_twice and can_use_first_candy_twice:
 		candy.use(target, all_targets)
 		can_use_first_candy_twice = false
-		
+
 	used_candy.push_back(candy)
 
 func _process(_delta: float) -> void:
@@ -173,6 +221,10 @@ func _process(_delta: float) -> void:
 		return
 
 	if $EnemyContainer.get_children().size() == 0:
+		# no rewards after boss house (for mvp)
+		if is_boss_house:
+			finish()
+
 		show_rewards()
 
 	if player_ref.health <= 0:
@@ -213,3 +265,25 @@ func _on_candy_picker_item_selected(index: int) -> void:
 	var selected_reward_candy = rewards[index]
 	player_ref.basket.push_back(selected_reward_candy)
 	finish()
+
+
+const ENEMY_PAIRINGS: Array[Array] = [
+	[{"health": 10, "attack": 2}],
+	[{"health": 20, "attack": 2}, {"health": 20, "attack": 2}],
+	[{"health": 30, "attack": 3}, {"health": 30, "attack": 3}, {"health": 30, "attack": 3}],
+	[{"health": 40, "attack": 4}, {"health": 40, "attack": 4}, {"health": 40, "attack": 4}, {"health": 40, "attack": 4}],
+	[{"health": 50, "attack": 5}],
+]
+
+
+const ENEMY_PAIRINGS_TEXTURES = [
+	[["res://art/ghost.png"], ["res://art/skeleton.png"]], # First enemy - Ghost or Skeleton
+	[["res://art/shrek.png", "res://art/donkey.png"], ["res://art/mario.png", "res://art/luigi.png"], ["res://art/spongebob.png", "res://art/patrick.png"]], # Shrek and Donkey or Mario and Luigi or SpongeBob and Patrick
+	[["res://art/blossom.png", "res://art/bubbles.png", "res://art/buttercup.png"], ["res://art/hades.png", "res://art/demon.png", "res://art/demon.png"]], # Powerpuff Girls (Blossom, Bubbles, Buttercup) or Hades and demons
+	[["res://art/scooby.png", "res://art/shaggy.png", "res://art/fred.png", "res://art/daphne.png"]], # Scooby Doo (Scooby, Shaggy, Fred, Daphne)
+	[["res://art/homer.png"]], # Knight
+]
+
+const BOSS_ENEMY_PAIRING = [{"health": 100, "attack": 10}]
+const BOSS_ENEMY_PAIRING_TEXTURES = [preload("res://art/wizard.png")]
+# const BOSS_ENEMY_PAIRING_TEXTURES = [preload("res://art/boss.png")]

@@ -54,6 +54,7 @@ visible = false
 [connection signal="downgrade_candy" from="Treat" to="Basket" method="_on_treat_downgrade_candy"]
 [connection signal="duplicate_candy" from="Treat" to="Basket" method="_on_treat_duplicate_candy"]
 [connection signal="remove_candy" from="Treat" to="Basket" method="_on_treat_remove_candy"]
+[connection signal="trigger_fight" from="Treat" to="." method="_on_treat_trigger_fight"]
 [connection signal="upgrade_candy" from="Treat" to="Basket" method="_on_treat_upgrade_candy"]
 [connection signal="complete" from="FriendsHouse" to="." method="_on_friends_house_complete"]
 [connection signal="complete" from="Boss" to="." method="_on_boss_complete"]
