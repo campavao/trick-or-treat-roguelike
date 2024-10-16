@@ -99,22 +99,16 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 	# Pick set of enemies
 	var is_boss = type == Shared.HOUSE_TYPE.BOSS
 	var pair: Array
-	var textures: Array
 	
 	print(is_first_trick)
 
 	if is_first_trick:
 		pair = ENEMY_PAIRINGS[0]
-		textures = ENEMY_PAIRINGS_TEXTURES[0]
 	elif is_boss:
 		pair = BOSS_ENEMY_PAIRING
-		textures = BOSS_ENEMY_PAIRING_TEXTURES
 	else:
 		var pair_index = randi_range(0, ENEMY_PAIRINGS.size() - 1) # Random int between 1 and 4
 		pair = ENEMY_PAIRINGS[pair_index]
-		textures = ENEMY_PAIRINGS_TEXTURES[pair_index]
-
-	var texture_pack = textures.pick_random()
 	
 	# Populate with that set
 	for set_of_enemies in pair:
@@ -133,7 +127,12 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 		var health = standard_health_multiplier * rich_multiplier
 		var attack = standard_attack_multiplier * rich_multiplier
 
-		enemy.initialize(health, attack, is_rich, texture_pack[index])
+		var texture = ENEMY_TEXTURES.pick_random()
+
+		if is_boss:
+			texture = BOSS_ENEMY_PAIRING_TEXTURE
+
+		enemy.initialize(health, attack, is_rich, texture)
 		enemy.connect('selected', _on_enemy_press)
 		enemy.name = "Enemy"
 
@@ -270,20 +269,19 @@ func _on_candy_picker_item_selected(index: int) -> void:
 const ENEMY_PAIRINGS: Array[Array] = [
 	[{"health": 10, "attack": 2}],
 	[{"health": 20, "attack": 2}, {"health": 20, "attack": 2}],
-	[{"health": 30, "attack": 3}, {"health": 30, "attack": 3}, {"health": 30, "attack": 3}],
-	[{"health": 40, "attack": 4}, {"health": 40, "attack": 4}, {"health": 40, "attack": 4}, {"health": 40, "attack": 4}],
-	[{"health": 50, "attack": 5}],
+	[{"health": 30, "attack": 1}, {"health": 10, "attack": 3}, {"health": 10, "attack": 3}],
+	[{"health": 20, "attack": 2}, {"health": 20, "attack": 2}, {"health": 20, "attack": 1}, {"health": 20, "attack": 1}],
+	[{"health": 40, "attack": 4}],
 ]
 
 
-const ENEMY_PAIRINGS_TEXTURES = [
-	[["res://art/ghost.png"], ["res://art/skeleton.png"]], # First enemy - Ghost or Skeleton
-	[["res://art/shrek.png", "res://art/donkey.png"], ["res://art/mario.png", "res://art/luigi.png"], ["res://art/spongebob.png", "res://art/patrick.png"]], # Shrek and Donkey or Mario and Luigi or SpongeBob and Patrick
-	[["res://art/blossom.png", "res://art/bubbles.png", "res://art/buttercup.png"], ["res://art/hades.png", "res://art/demon.png", "res://art/demon.png"]], # Powerpuff Girls (Blossom, Bubbles, Buttercup) or Hades and demons
-	[["res://art/scooby.png", "res://art/shaggy.png", "res://art/fred.png", "res://art/daphne.png"]], # Scooby Doo (Scooby, Shaggy, Fred, Daphne)
-	[["res://art/homer.png"]], # Knight
+const ENEMY_TEXTURES = [
+	"res://art/ghost.png",
+	"res://art/skeleton.png",
+	"res://art/spiderman.png",
+	"res://art/pumpkin head.png",
+	"res://art/cat.png",
 ]
 
-const BOSS_ENEMY_PAIRING = [{"health": 100, "attack": 10}]
-const BOSS_ENEMY_PAIRING_TEXTURES = [preload("res://art/wizard.png")]
-# const BOSS_ENEMY_PAIRING_TEXTURES = [preload("res://art/boss.png")]
+const BOSS_ENEMY_PAIRING = [{"health": 80, "attack": 8}]
+const BOSS_ENEMY_PAIRING_TEXTURE = "res://art/boss.png"
