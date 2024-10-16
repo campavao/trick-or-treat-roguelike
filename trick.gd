@@ -26,23 +26,19 @@ var can_use_first_candy_twice := false
 
 var is_boss_house := false
 
-var base_health := 20
-var base_attack := 2
 
-func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int, difficulty_multiplier: int, health: int = base_health, attack: int = base_attack):
+func enable(player: Player, type: Shared.HOUSE_TYPE, max_amount: int, difficulty_multiplier: int, is_first_trick: bool = false):
 	show()
 
 	max_amount_of_enemies = max_amount
 	is_boss_house = type == Shared.HOUSE_TYPE.BOSS
-	base_health = health
-	base_attack = attack
-	
+
 	# Reference the current player
 	player_ref = player
 	reset_basket(player.basket)
 
 	# Setup enemy
-	setup_enemies(type, difficulty_multiplier)
+	setup_enemies(type, difficulty_multiplier, is_first_trick)
 
 	# Setup player
 	$Player.init(player)
@@ -87,30 +83,44 @@ func clear_rewards():
 	$RewardContainer/CandyPicker.clear()
 	rewards.clear()
 
-func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int):
+func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first_trick: bool = false):
+	# Pick set of enemies
+	var is_boss = type == Shared.HOUSE_TYPE.BOSS
+	var pair
+	var textures
+
+	if is_first_trick:
+		pair = ENEMY_PAIRINGS[0]
+		textures = ENEMY_PAIRINGS_TEXTURES[0]
+	elif is_boss:
+		pair = BOSS_ENEMY_PAIRING
+		textures = BOSS_ENEMY_PAIRING_TEXTURES
+	else:
+		var pair_index = randi_range(0, ENEMY_PAIRINGS.size() - 1) # Random int between 1 and 4
+		pair = ENEMY_PAIRINGS[pair_index]
+		textures = ENEMY_PAIRINGS_TEXTURES[pair_index]
+
+	# Populate with that set
 	var amount = randi_range(1, max_amount_of_enemies) # Random int between 1 and 4
-	for i in amount:
+	for set in pair:
+		var index = pair.indexOf(set)
 		var enemy = ENEMY_SCENE.instantiate()
 		var is_rich = type == Shared.HOUSE_TYPE.RICH
 		var rich_multiplier = 2 if is_rich else 1
 		match type:
 			Shared.HOUSE_TYPE.NORMAL:
 				rich_multiplier = 1
-			Shared.HOUSE_TYPE.RICH:
+			Shared.HOUSE_TYPE.RICH, Shared.HOUSE_TYPE.BOSS:
 				rich_multiplier = 2
-			Shared.HOUSE_TYPE.BOSS:
-				rich_multiplier = 4
 
-		var standard_health_multiplier = base_health * difficulty_multiplier
-		var standard_attack_multiplier = base_attack * difficulty_multiplier
+		var standard_health_multiplier = set.health * difficulty_multiplier
+		var standard_attack_multiplier = set.attack * difficulty_multiplier
 		var health = standard_health_multiplier * rich_multiplier
 		var attack = standard_attack_multiplier * rich_multiplier
 
-		print("health: ", health, " attack: ", attack)
-
-		enemy.initialize(health, attack, is_rich)
+		enemy.initialize(health, attack, is_rich, textures[index])
 		enemy.connect('selected', _on_enemy_press)
-		enemy.name = "Enemy_" + str(i)
+		enemy.name = "Enemy"
 
 		$EnemyContainer.add_child(enemy)
 
@@ -240,3 +250,25 @@ func _on_candy_picker_item_selected(index: int) -> void:
 	var selected_reward_candy = rewards[index]
 	player_ref.basket.push_back(selected_reward_candy)
 	finish()
+
+
+const ENEMY_PAIRINGS = [
+	[{"health": 10, "attack": 2}],
+	[{"health": 20, "attack": 2}, {"health": 20, "attack": 2}],
+	[{"health": 30, "attack": 3}, {"health": 30, "attack": 3}, {"health": 30, "attack": 3}],
+	[{"health": 40, "attack": 4}, {"health": 40, "attack": 4}, {"health": 40, "attack": 4}, {"health": 40, "attack": 4}],
+	[{"health": 50, "attack": 5}],
+]
+
+
+const ENEMY_PAIRINGS_TEXTURES = [
+	[["res://art/enemy_1.png"]], # First enemy - Ghost or Skeleton or Zombie
+	[["res://art/enemy_2.png", "res://art/enemy_2.png"]], # Shrek and Donkey or Mario and Luigi or SpongeBob and Patrick
+	[["res://art/enemy_3.png", "res://art/enemy_3.png", "res://art/enemy_3.png"]], # Powerpuff Girls (Blossom, Bubbles, Buttercup) or Hades and demons
+	[["res://art/enemy_4.png", "res://art/enemy_4.png", "res://art/enemy_4.png", "res://art/enemy_4.png"]], # Scooby Doo (Scooby, Shaggy, Fred, Daphne)
+	[["res://art/enemy_5.png"]], # Knight
+]
+
+const BOSS_ENEMY_PAIRING = [{"health": 100, "attack": 10}]
+const BOSS_ENEMY_PAIRING_TEXTURES = [preload("res://art/wizard.png")]
+# const BOSS_ENEMY_PAIRING_TEXTURES = [preload("res://art/boss.png")]

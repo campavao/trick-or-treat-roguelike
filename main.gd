@@ -87,7 +87,7 @@ func _on_first_neighborhood_friends_house_selected() -> void:
 
 func _on_first_neighborhood_boss_selected() -> void:
 	$Trick.base_health = 40
-	$Trick.enable(player, Shared.HOUSE_TYPE.BOSS, 1, 1, 40, 4)
+	$Trick.enable(player, Shared.HOUSE_TYPE.BOSS, 1, 1)
 
 	# $Boss.enable(player)
 	$"First Neighborhood".hide()
@@ -137,4 +137,4 @@ func enable_trick(type: Shared.HOUSE_TYPE):
 	var medium = houses_beaten.has('house_10')
 	var max_amount_of_enemies = 4 if medium else 3 if easy else 2
 	var difficulty_multiplier = 2 if medium else 1
-	$Trick.enable(player, type, max_amount_of_enemies, difficulty_multiplier)
+	$Trick.enable(player, type, max_amount_of_enemies, difficulty_multiplier, !houses_beaten.has('house_1'))

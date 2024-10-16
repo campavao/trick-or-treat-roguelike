@@ -6,6 +6,7 @@ signal selected(enemy: Enemy)
 @export var is_dead := false
 @export var is_elite := false
 @export var power: int = 2
+@export var texture_path: String = "res://art/enemy_1.png"
 
 var next_move: MOVES = MOVES.ATTACK
 
@@ -15,7 +16,11 @@ enum MOVES {
 	DEFEND = 2
 }
 
-func initialize(init_health: int, starting_power: int, is_rich: bool):
+func _init(stats):
+	initialize(stats.health, stats.attack, stats.is_rich)
+
+func initialize(init_health: int, starting_power: int, is_rich: bool = false, texture_path: String = "res://art/enemy_1.png"):
+	name = "Enemy"
 	pick_next_move()
 
 	power = starting_power
@@ -95,7 +100,7 @@ func _process(_delta):
 	$ProtectionAmount.text = str(protection)
 	$HealthBarLabel.text = str(health) + " / " + str(starting_health)
 	$IntentLabel.text = str(power)
-	
+
 	if protection > 0:
 		$ProtectionIcon.show()
 		$ProtectionAmount.show()
