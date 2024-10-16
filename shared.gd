@@ -160,7 +160,7 @@ func get_candy(candy: Candy, level: CandyLevel = CandyLevel.FUN_SIZE):
 		Candy.SWEDISH_FISH:
 			add_candy_details(candy_base, 3, get_candy_texture_path("swedish_fish", level))
 		Candy.GUMMY_BEARS:
-			add_candy_details(candy_base, -2, get_candy_texture_path("gummy_bears", level))
+			add_candy_details(candy_base, -2, get_candy_texture_path("gummybears", level))
 		Candy.NERDS_ROPE:
 			add_candy_details(candy_base, 0, get_candy_texture_path("nerds_rope", level))
 
