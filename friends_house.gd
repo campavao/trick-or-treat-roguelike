@@ -45,6 +45,7 @@ func reset():
 	$Inventory.clear()
 	$Inventory.hide()
 	$ActionLabel.hide()
+	$SkipButton.show()
 	$RemoveButton.show()
 	$UpgradeButton.show()
 
@@ -60,5 +61,6 @@ func _on_remove_button_pressed() -> void:
 	populate_inventory()
 
 func hide_options():
+	$SkipButton.hide()
 	$RemoveButton.hide()
 	$UpgradeButton.hide()

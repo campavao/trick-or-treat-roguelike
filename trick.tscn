@@ -35,19 +35,19 @@ offset_bottom = 531.0
 
 [node name="EnemyContainer" type="HBoxContainer" parent="."]
 offset_left = 323.0
-offset_top = 394.0
+offset_top = 409.0
 offset_right = 879.0
-offset_bottom = 515.0
+offset_bottom = 530.0
 theme_override_constants/separation = 20
 
 [node name="CandyContainer" type="ItemList" parent="."]
 custom_minimum_size = Vector2(64, 0)
 offset_left = 33.0
 offset_top = 162.0
-offset_right = 565.0
-offset_bottom = 295.0
+offset_right = 693.0
+offset_bottom = 323.0
 theme_override_constants/h_separation = 22
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 18
 theme_override_styles/focus = SubResource("StyleBoxEmpty_e0l03")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_8cu33")
 allow_search = false
@@ -56,7 +56,7 @@ text_overrun_behavior = 0
 max_columns = 16
 same_column_width = true
 icon_mode = 0
-icon_scale = 1.5
+icon_scale = 2.0
 fixed_icon_size = Vector2i(32, 64)
 
 [node name="RewardContainer" type="Control" parent="."]
@@ -83,18 +83,20 @@ text = "Skip"
 
 [node name="CandyPicker" type="ItemList" parent="RewardContainer"]
 layout_mode = 2
-offset_left = 389.0
-offset_top = 184.0
-offset_right = 1150.0
-offset_bottom = 410.0
+offset_left = 345.0
+offset_top = 166.0
+offset_right = 805.0
+offset_bottom = 392.0
 size_flags_horizontal = 5
 size_flags_vertical = 3
 theme_override_constants/h_separation = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_n4m73")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_qhufn")
 allow_search = false
+max_text_lines = 2
 max_columns = 3
 same_column_width = true
+fixed_column_width = 118
 icon_mode = 0
 icon_scale = 2.0
 fixed_icon_size = Vector2i(32, 64)

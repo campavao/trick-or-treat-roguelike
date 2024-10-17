@@ -1,28 +1,35 @@
-[gd_scene load_steps=5 format=3 uid="uid://sor8vi6v7mmo"]
+[gd_scene load_steps=8 format=3 uid="uid://sor8vi6v7mmo"]
 
 [ext_resource type="Script" path="res://start.gd" id="1_xh2gb"]
+[ext_resource type="Texture2D" uid="uid://bxvwgcxdnouj7" path="res://art/candy/start background.png" id="2_1sks8"]
 [ext_resource type="Texture2D" uid="uid://dq1rxnov7cusx" path="res://art/warrior.png" id="2_sjtyg"]
 [ext_resource type="Texture2D" uid="uid://c6ooqne8iot4g" path="res://art/wizard.png" id="3_ckthu"]
+[ext_resource type="FontFile" uid="uid://duxtnxscj6g43" path="res://shlop rg.otf" id="3_qp7ko"]
 [ext_resource type="Texture2D" uid="uid://bgsbt4iroiw66" path="res://art/witch.png" id="4_siix8"]
+[ext_resource type="FontFile" uid="uid://c2inugm1jkbs7" path="res://Play Chickens.otf" id="7_7rjjo"]
 
 [node name="Start" type="Node2D"]
 script = ExtResource("1_xh2gb")
 
-[node name="TitleAndButtonContainer" type="VBoxContainer" parent="."]
-visible = false
-offset_top = 120.0
-offset_right = 1152.0
-offset_bottom = 364.0
+[node name="StartBackground" type="Sprite2D" parent="."]
+position = Vector2(571, 324)
+texture = ExtResource("2_1sks8")
+metadata/_edit_lock_ = true
 
-[node name="TitleContainer" type="HBoxContainer" parent="TitleAndButtonContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Title" type="Label" parent="TitleAndButtonContainer/TitleContainer"]
-layout_mode = 2
+[node name="Title" type="Label" parent="."]
+offset_left = 392.0
+offset_top = 149.0
+offset_right = 756.0
+offset_bottom = 706.0
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 100
-text = "Trick or Treat"
+theme_override_constants/line_spacing = -66
+theme_override_fonts/font = ExtResource("3_qp7ko")
+theme_override_font_sizes/font_size = 124
+text = "Trick or
+
+
+Defeat"
+horizontal_alignment = 1
 
 [node name="CharacterSelect" type="Node2D" parent="."]
 
@@ -74,6 +81,14 @@ offset_right = 94.0
 offset_bottom = 167.0
 text = "Witch
 "
+
+[node name="Label" type="Label" parent="."]
+offset_left = 495.0
+offset_top = 551.0
+offset_right = 633.0
+offset_bottom = 574.0
+theme_override_fonts/font = ExtResource("7_7rjjo")
+text = "Select a character"
 
 [connection signal="pressed" from="CharacterSelect/CharacterContainer/Warrior" to="." method="_on_warrior_pressed"]
 [connection signal="pressed" from="CharacterSelect/CharacterContainer/Wizard" to="." method="_on_wizard_pressed"]

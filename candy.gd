@@ -30,13 +30,13 @@ func use(target: CharacterBase, all_targets: Array[CharacterBase]):
 	match (level):
 		Level.KING_SIZE:
 			var random_enemy = get_random_target(all_targets, [target], is_heal)
-			random_enemy.eat(power)
+			random_enemy.eat(power / 2)
 		Level.PARTY_SIZE:
 			var random_enemy = get_random_target(all_targets, [target], is_heal)
-			random_enemy.eat(power)
+			random_enemy.eat(power / 2)
 			
 			var random_enemy_2 = get_random_target(all_targets, [target, random_enemy], is_heal)
-			random_enemy_2.eat(power)
+			random_enemy_2.eat(power / 2)
 
 	# Apply candy special effect
 	match (type):

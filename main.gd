@@ -103,8 +103,8 @@ func _process(_delta):
 
 func get_trick_or_treat() -> HouseType:
 	var last_three = trick_or_treat_tracker.slice(0, 3)
-	var first = last_three.front()
-	if first != null and last_three.size() == 3:
+	if last_three.size() == 3:
+		var first = last_three.front()
 		var is_all_same = last_three.all(func(element): return element == first)
 		if is_all_same:
 			match first:

@@ -9,7 +9,7 @@ const fallback_texture = preload('res://art/skeleton.png')
 @export var is_dead := false
 @export var is_elite := false
 @export var power: int = 2
-@export var texture_path: String = "res://art/enemy_1.png"
+@export var texture_path: String = "res://art/skeleton.png"
 
 var next_move: MOVES = MOVES.ATTACK
 
@@ -19,19 +19,17 @@ enum MOVES {
 	DEFEND = 2
 }
 
-
-func initialize(init_health: int, starting_power: int, is_rich: bool = false, texture_path: String = "res://art/enemy_1.png"):
+func initialize(init_health: int, starting_power: int, is_rich: bool = false, start_texture_path: String = "res://art/ghost.png"):
 	name = "Enemy"
 	pick_next_move()
 
 	power = starting_power
 	is_elite = is_rich
-	print(texture_path)
 	scale = Vector2(2, 2)
-	texture_normal = load(texture_path)
+	$EnemyButton.texture_normal = load(start_texture_path)
 	
-	if texture_normal == null:
-		texture_normal = fallback_texture
+	if $EnemyButton.texture_normal == null:
+		$EnemyButton.texture_normal = fallback_texture
 
 	set_starting_health(init_health)
 	$HealthBar.value = init_health
@@ -55,7 +53,7 @@ func attack(player):
 		MOVES.ATTACK:
 			player.eat(power)
 		MOVES.DEFEND:
-			health += power
+			heal(power)
 		MOVES.SPECIAL:
 			protect(power)
 
@@ -99,9 +97,6 @@ func pick_next_move():
 		MOVES.SPECIAL:
 			$NextMove.texture = preload('res://art/protection_intent.png')
 
-func _on_pressed() -> void:
-	selected.emit(self)
-
 func _process(_delta):
 	$HealthBar.value = health
 	$ProtectionAmount.text = str(protection)
@@ -114,3 +109,7 @@ func _process(_delta):
 	else:
 		$ProtectionIcon.hide()
 		$ProtectionAmount.hide()
+
+
+func _on_enemy_button_pressed() -> void:
+	selected.emit(self)

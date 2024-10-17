@@ -13,23 +13,23 @@ const SIDE_EFFECTS = Shared.SIDE_EFFECTS
 const TREAT_DATA = {
 	TREAT_TYPES.INCREASE_MAX_HEALTH: {
 		"value": 10,
-		"text": ["Increase max health by", ""],
+		"text": ["Increase max health by ", ""],
 	},
 	TREAT_TYPES.INCREASE_HAND_SIZE: {
 		"value": 1,
-		"text": ["Increase hand size by", ""],
+		"text": ["Increase hand size by ", ""],
 	},
 	TREAT_TYPES.UPGRADE_CANDY: {
 		"value": 1,
-		"text": ["Upgrade", "candy"],
+		"text": ["Upgrade ", " candy"],
 	},
 	TREAT_TYPES.GAIN_SHIELD: {
 		"value": 1,
-		"text": ["Gain", "shield at start of turn"],
+		"text": ["Gain ", " shield at start of turn"],
 	},
 	TREAT_TYPES.DUPE_CANDY: {
 		"value": 1,
-		"text": ["Duplicate", "candy"],
+		"text": ["Duplicate ", " candy"],
 	},
 	TREAT_TYPES.MAKE_FIRST_CANDY_ACTIVATE_TWICE: {
 		"value": 0,
@@ -41,7 +41,7 @@ const TREAT_DATA = {
 	},
 	TREAT_TYPES.HEAL: {
 		"value": 5,
-		"text": ["Heal for", ""],
+		"text": ["Heal for ", ""],
 	},
 	TREAT_TYPES.NONE: {
 		"value": 0,
@@ -56,23 +56,23 @@ const SIDE_EFFECT_DATA = {
 	},
 	SIDE_EFFECTS.DECREASE_HAND_SIZE: {
 		"value": 1,
-		"text": ["decrease hand size by", ""],
+		"text": ["decrease hand size by ", ""],
 	},
 	SIDE_EFFECTS.DOWNGRADE_CANDY: {
 		"value": 1,
-		"text": ["downgrade", "candy"],
+		"text": ["downgrade ", " candy"],
 	},
 	SIDE_EFFECTS.REMOVE_CANDY: {
 		"value": 1,
-		"text": ["remove", "candy"],
+		"text": ["remove ", " candy"],
 	},
 	SIDE_EFFECTS.TRIGGER_FIGHT: {
 		"value": 1,
-		"text": ['trigger', 'fight']
+		"text": ['trigger ', ' fight']
 	},
 	SIDE_EFFECTS.TAKE_DAMAGE: {
 		"value": 5,
-		"text": ['take', 'damage']
+		"text": ['take ', ' damage']
 	},
 	SIDE_EFFECTS.NONE: {
 		"value": 0,
@@ -122,17 +122,17 @@ class TreatOption:
 
 		if not is_none_type:
 			var value = TREAT_DATA[type].value if not enhanced else TREAT_DATA[type].value * 2
-			var value_text = " " + str(value) + " "
+			var value_text = str(value)
 			text = value_text.join(TREAT_DATA[type].text)
 
 		if side_effect != SIDE_EFFECTS.NONE:
 			var value = SIDE_EFFECT_DATA[side_effect].value if not enhanced else SIDE_EFFECT_DATA[side_effect].value * 2
-			var value_text = " " + str(value) + " "
+			var value_text = str(value)
 			if side_effect == SIDE_EFFECTS.TRIGGER_FIGHT:
 				if value == 2:
-					value_text = " a rich house "
+					value_text = "a rich house"
 				else:
-					value_text = " a house "
+					value_text = "a house"
 			var info_text = value_text.join(SIDE_EFFECT_DATA[side_effect].text)
 
 			if not is_none_type:

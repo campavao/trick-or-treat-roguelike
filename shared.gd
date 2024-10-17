@@ -99,9 +99,9 @@ func get_candy_description(candy: Candy, yum: int, level: CandyLevel):
 
 	match level:
 		CandyLevel.KING_SIZE:
-			return base_string + "\n" + "Hits an extra target."
+			return base_string + "\n" + "Hits an extra target for half the amount."
 		CandyLevel.PARTY_SIZE:
-			return base_string + "\n" + "Hits two extra targets."
+			return base_string + "\n" + "Hits two extra targets for half the amount."
 
 	return base_string
 
@@ -172,7 +172,6 @@ func add_candy_details(base: Dictionary, yum: int, texture_path: String):
 
 func get_random_candy(level: CandyLevel = CandyLevel.FUN_SIZE):
 	var enum_size = Candy.size()
-	print(enum_size)
 	var random_index = randi_range(0, enum_size - 1)
 	return get_candy(random_index, level)
 

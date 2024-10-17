@@ -1,16 +1,31 @@
-[gd_scene load_steps=2 format=3 uid="uid://cxki5fuuoo7pv"]
+[gd_scene load_steps=7 format=3 uid="uid://cxki5fuuoo7pv"]
 
 [ext_resource type="Script" path="res://treat.gd" id="1_3kgx8"]
+[ext_resource type="Texture2D" uid="uid://dgk3jwjo2cfh0" path="res://art/candy/treat background.png" id="2_xkb3u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t8uu4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tokx7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_51108"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0o6vg"]
 
 [node name="Treat" type="Node2D"]
 script = ExtResource("1_3kgx8")
 
+[node name="TreatBackground" type="Sprite2D" parent="."]
+position = Vector2(571, 324)
+texture = ExtResource("2_xkb3u")
+metadata/_edit_lock_ = true
+
 [node name="Label" type="Label" parent="."]
-offset_left = 532.0
-offset_top = 39.0
-offset_right = 573.0
-offset_bottom = 62.0
-text = "Treat"
+offset_left = 449.0
+offset_top = 186.0
+offset_right = 689.0
+offset_bottom = 230.0
+theme_override_font_sizes/font_size = 42
+text = "Pick a treat"
 
 [node name="Button" type="Button" parent="."]
 visible = false
@@ -22,10 +37,21 @@ text = "Complete
 "
 
 [node name="Options" type="ItemList" parent="."]
-offset_left = 36.0
-offset_top = 361.0
-offset_right = 1125.0
-offset_bottom = 622.0
+offset_left = 264.0
+offset_top = 265.0
+offset_right = 868.0
+offset_bottom = 526.0
+theme_override_colors/font_selected_color = Color(0.388235, 0.607843, 1, 1)
+theme_override_colors/font_hovered_color = Color(0.372549, 0.803922, 0.894118, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/focus = SubResource("StyleBoxEmpty_t8uu4")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_tokx7")
+theme_override_styles/hovered = SubResource("StyleBoxEmpty_51108")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_0o6vg")
+max_text_lines = 2
+text_overrun_behavior = 1
+fixed_column_width = 600
+icon_mode = 0
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="item_selected" from="Options" to="." method="_on_options_item_selected"]

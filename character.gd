@@ -1,4 +1,4 @@
-extends TextureButton
+extends Control
 class_name CharacterBase
 
 var starting_health: int = 10

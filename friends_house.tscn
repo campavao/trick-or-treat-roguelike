@@ -51,14 +51,15 @@ text = "Skip
 
 [node name="Inventory" type="ItemList" parent="."]
 visible = false
-offset_left = 2.0
-offset_top = 79.0
-offset_right = 1149.0
-offset_bottom = 590.0
-max_columns = 16
+offset_left = 283.0
+offset_top = 83.0
+offset_right = 849.0
+offset_bottom = 562.0
+max_columns = 4
 same_column_width = true
+fixed_column_width = 128
 icon_mode = 0
-metadata/_edit_lock_ = true
+icon_scale = 2.0
 
 [node name="RemoveButton" type="Button" parent="."]
 offset_left = 460.0
@@ -68,6 +69,7 @@ offset_bottom = 280.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_4mbrx")
 text = "Remove a candy"
+metadata/_edit_lock_ = true
 
 [node name="UpgradeButton" type="Button" parent="."]
 offset_left = 189.0
@@ -77,6 +79,7 @@ offset_bottom = 282.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_4mbrx")
 text = "Upgrade a candy"
+metadata/_edit_lock_ = true
 
 [connection signal="pressed" from="SkipButton" to="." method="_on_button_pressed"]
 [connection signal="item_selected" from="Inventory" to="." method="_on_inventory_item_selected"]

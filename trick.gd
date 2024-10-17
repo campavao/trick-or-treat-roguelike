@@ -100,8 +100,6 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 	var is_boss = type == Shared.HOUSE_TYPE.BOSS
 	var pair: Array
 	
-	print(is_first_trick)
-
 	if is_first_trick:
 		pair = ENEMY_PAIRINGS[0]
 	elif is_boss:
@@ -109,10 +107,11 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 	else:
 		var pair_index = randi_range(0, ENEMY_PAIRINGS.size() - 1) # Random int between 1 and 4
 		pair = ENEMY_PAIRINGS[pair_index]
+		
+	print(pair)
 	
 	# Populate with that set
 	for set_of_enemies in pair:
-		var index = pair.bsearch(set_of_enemies, true)
 		var enemy = ENEMY_SCENE.instantiate()
 		var is_rich = type == Shared.HOUSE_TYPE.RICH
 		var rich_multiplier = 2 if is_rich else 1
@@ -137,6 +136,7 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 		enemy.name = "Enemy"
 
 		$EnemyContainer.add_child(enemy)
+		print($EnemyContainer.get_children())
 
 func start_player_turn():
 	if player_ref.start_turn_shield_amount > 0:
@@ -220,6 +220,9 @@ func _process(_delta: float) -> void:
 		return
 
 	if $EnemyContainer.get_children().size() == 0:
+		print('end')
+		print($EnemyContainer.get_children())
+
 		# no rewards after boss house (for mvp)
 		if is_boss_house:
 			finish()

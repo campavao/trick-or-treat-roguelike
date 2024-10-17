@@ -6,9 +6,17 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4v1dd"]
 bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f366u"]
 bg_color = Color(0.6, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="PlayerDisplay" type="TextureButton"]
 offset_left = -64.0
@@ -38,9 +46,9 @@ show_percentage = false
 [node name="HealthBarLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 44.0
-offset_top = -19.0
-offset_right = 87.0
-offset_bottom = 4.0
+offset_top = -15.0
+offset_right = 91.0
+offset_bottom = 8.0
 text = "20/20"
 
 [node name="ProtectionIcon" type="Sprite2D" parent="."]
