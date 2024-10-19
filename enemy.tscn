@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dq7b6a2c51nug"]
+[gd_scene load_steps=8 format=3 uid="uid://dq7b6a2c51nug"]
 
 [ext_resource type="Texture2D" uid="uid://bitudkvumuu5f" path="res://art/skeleton.png" id="1_iqdel"]
 [ext_resource type="Script" path="res://enemy.gd" id="1_jd3w1"]
 [ext_resource type="Texture2D" uid="uid://8lxupw4eicnt" path="res://art/attack_intent.png" id="3_fab6k"]
 [ext_resource type="Texture2D" uid="uid://bn21uogr7abev" path="res://art/protection_intent.png" id="4_h4o5g"]
+[ext_resource type="PackedScene" uid="uid://b0dtbut0mekkk" path="res://floating_number.tscn" id="5_rldpd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_214ns"]
 bg_color = Color(0, 0, 0, 1)
@@ -86,5 +87,7 @@ offset_bottom = 269.0
 scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("1_iqdel")
 stretch_mode = 0
+
+[node name="FloatingNumber" parent="." instance=ExtResource("5_rldpd")]
 
 [connection signal="pressed" from="EnemyButton" to="." method="_on_enemy_button_pressed"]

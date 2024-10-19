@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dwse3p47iejxf"]
+[gd_scene load_steps=11 format=3 uid="uid://dwse3p47iejxf"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_jh07u"]
 [ext_resource type="PackedScene" uid="uid://sor8vi6v7mmo" path="res://start.tscn" id="2_dr4qm"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://byfx5xfyxhh3b" path="res://friends_house.tscn" id="7_s635j"]
 [ext_resource type="PackedScene" uid="uid://dktoxmunlu514" path="res://boss.tscn" id="8_rgo3n"]
 [ext_resource type="PackedScene" uid="uid://cqfnki564rivc" path="res://basket.tscn" id="9_ctemt"]
+[ext_resource type="PackedScene" uid="uid://by1nob816beiv" path="res://audio_menu.tscn" id="10_ykywt"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_jh07u")
@@ -43,6 +44,8 @@ visible = false
 [node name="Basket" parent="." instance=ExtResource("9_ctemt")]
 visible = false
 
+[node name="AudioMenu" parent="." instance=ExtResource("10_ykywt")]
+
 [connection signal="character_select" from="Start" to="." method="_on_start_character_select"]
 [connection signal="boss_selected" from="First Neighborhood" to="." method="_on_first_neighborhood_boss_selected"]
 [connection signal="finish" from="First Neighborhood" to="." method="_on_first_neighborhood_finish"]
@@ -58,4 +61,5 @@ visible = false
 [connection signal="trigger_fight" from="Treat" to="." method="_on_treat_trigger_fight"]
 [connection signal="upgrade_candy" from="Treat" to="Basket" method="_on_treat_upgrade_candy"]
 [connection signal="complete" from="FriendsHouse" to="." method="_on_friends_house_complete"]
-[connection signal="complete" from="Boss" to="." method="_on_boss_complete"]
+[connection signal="end_early" from="Boss" to="." method="_on_boss_end_early"]
+[connection signal="start" from="Boss" to="." method="_on_boss_start"]

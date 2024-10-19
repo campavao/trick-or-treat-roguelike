@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://brqxg2ax7e88h"]
+
+[ext_resource type="Script" path="res://slider.gd" id="1_3cr23"]
+
+[node name="Slider" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_3cr23")
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 122.0
+offset_right = 600.0
+offset_bottom = 215.0
+max_value = 30.0
+value = 30.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 315.0
+offset_top = 84.0
+offset_right = 490.0
+offset_bottom = 152.0
+theme_override_font_sizes/font_size = 65
+text = "Sound"
+
+[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]

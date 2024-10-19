@@ -1,4 +1,5 @@
 extends TextureButton
+class_name PlayerDisplay
 
 var player_ref: Player
 
@@ -19,6 +20,7 @@ func _process(_delta):
 
 func init(player: Player):
 	player_ref = player
+	player.display_node = self
 
 	match player.character:
 		Shared.Characters.WARRIOR:

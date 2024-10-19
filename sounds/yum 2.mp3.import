@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d13wbgdq1ubo7"
+path="res://.godot/imported/yum 2.mp3-5cdd700cd08b2479a8bc867497c46078.mp3str"
+
+[deps]
+
+source_file="res://sounds/yum 2.mp3"
+dest_files=["res://.godot/imported/yum 2.mp3-5cdd700cd08b2479a8bc867497c46078.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

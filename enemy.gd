@@ -58,6 +58,8 @@ func attack(player):
 			protect(power)
 
 func eat(amount: int):
+	Signals.emit_signal("play_sound", Shared.SoundType.HIT)
+
 	super.eat(amount)
 
 	if health <= 0:

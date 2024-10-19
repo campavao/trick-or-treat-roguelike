@@ -258,3 +258,11 @@ enum SIDE_EFFECTS {
 	TAKE_DAMAGE,
 	NONE,
 }
+
+### Sounds #########3##########################################################
+
+enum SoundType {
+	YUM,
+	HIT,
+	GRAB
+}

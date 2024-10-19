@@ -107,9 +107,7 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 	else:
 		var pair_index = randi_range(0, ENEMY_PAIRINGS.size() - 1) # Random int between 1 and 4
 		pair = ENEMY_PAIRINGS[pair_index]
-		
-	print(pair)
-	
+			
 	# Populate with that set
 	for set_of_enemies in pair:
 		var enemy = ENEMY_SCENE.instantiate()
@@ -136,9 +134,9 @@ func setup_enemies(type: Shared.HOUSE_TYPE, difficulty_multiplier: int, is_first
 		enemy.name = "Enemy"
 
 		$EnemyContainer.add_child(enemy)
-		print($EnemyContainer.get_children())
 
 func start_player_turn():
+	player_ref.protection = 0
 	if player_ref.start_turn_shield_amount > 0:
 		player_ref.protect(player_ref.start_turn_shield_amount)
 
@@ -172,8 +170,10 @@ func clear_hand():
 
 func start_enemy_turn():
 	clear_hand()
+	
 
 	for enemy in get_all_enemies():
+		enemy.protection = 0
 		enemy.attack(player_ref)
 
 	for enemy in get_all_enemies():
@@ -220,9 +220,6 @@ func _process(_delta: float) -> void:
 		return
 
 	if $EnemyContainer.get_children().size() == 0:
-		print('end')
-		print($EnemyContainer.get_children())
-
 		# no rewards after boss house (for mvp)
 		if is_boss_house:
 			finish()
@@ -264,6 +261,7 @@ func show_rewards():
 
 
 func _on_candy_picker_item_selected(index: int) -> void:
+	Signals.emit_signal("play_sound", Shared.SoundType.GRAB)
 	var selected_reward_candy = rewards[index]
 	player_ref.basket.push_back(selected_reward_candy)
 	finish()
@@ -288,3 +286,7 @@ const ENEMY_TEXTURES = [
 
 const BOSS_ENEMY_PAIRING = [{"health": 80, "attack": 8}]
 const BOSS_ENEMY_PAIRING_TEXTURE = "res://art/boss.png"
+
+
+func _on_candy_container_item_selected(_index: int) -> void:
+	Signals.emit_signal("play_sound", Shared.SoundType.GRAB)

@@ -37,9 +37,10 @@ text = "Complete
 "
 
 [node name="Options" type="ItemList" parent="."]
-offset_left = 264.0
+visible = false
+offset_left = 68.0
 offset_top = 265.0
-offset_right = 868.0
+offset_right = 1070.0
 offset_bottom = 526.0
 theme_override_colors/font_selected_color = Color(0.388235, 0.607843, 1, 1)
 theme_override_colors/font_hovered_color = Color(0.372549, 0.803922, 0.894118, 1)
@@ -49,9 +50,42 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_tokx7")
 theme_override_styles/hovered = SubResource("StyleBoxEmpty_51108")
 theme_override_styles/selected = SubResource("StyleBoxEmpty_0o6vg")
 max_text_lines = 2
-text_overrun_behavior = 1
-fixed_column_width = 600
+fixed_column_width = 1000
 icon_mode = 0
+
+[node name="OptionContainer" type="VBoxContainer" parent="."]
+offset_top = 265.0
+offset_right = 1142.0
+offset_bottom = 505.0
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Option 1" type="Button" parent="OptionContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 24
+text = "This is option 1, but also option 1"
+
+[node name="Option 2" type="Button" parent="OptionContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 24
+text = "This is option 2, but also option 2"
+
+[node name="Option 3" type="Button" parent="OptionContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 24
+text = "This is option 3, but also option 3"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="item_selected" from="Options" to="." method="_on_options_item_selected"]
+[connection signal="pressed" from="OptionContainer/Option 1" to="." method="_on_option_1_pressed"]
+[connection signal="pressed" from="OptionContainer/Option 2" to="." method="_on_option_2_pressed"]
+[connection signal="pressed" from="OptionContainer/Option 3" to="." method="_on_option_3_pressed"]

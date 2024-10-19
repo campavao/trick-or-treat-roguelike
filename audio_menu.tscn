@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://by1nob816beiv"]
+
+[ext_resource type="Script" path="res://audio_menu.gd" id="1_iu0d0"]
+[ext_resource type="AudioStream" uid="uid://630bavq6f27i" path="res://sounds/background-music.mp3" id="1_p342a"]
+[ext_resource type="Texture2D" uid="uid://x8j5xclkdk7u" path="res://art/audio menu.png" id="2_sphgd"]
+[ext_resource type="PackedScene" uid="uid://brqxg2ax7e88h" path="res://slider.tscn" id="3_h5qk3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ehaqw"]
+bg_color = Color(0.603849, 0.343678, 0.10444, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 8
+
+[node name="AudioMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_iu0d0")
+
+[node name="BGMusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_p342a")
+volume_db = -15.0
+autoplay = true
+parameters/looping = true
+
+[node name="SoundPlayer" type="AudioStreamPlayer" parent="."]
+max_polyphony = 4
+
+[node name="Button" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1066.0
+offset_top = 21.0
+offset_right = 1130.0
+offset_bottom = 85.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+toggle_mode = true
+texture_normal = ExtResource("2_sphgd")
+
+[node name="Controls" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 195.0
+offset_top = 104.0
+offset_right = 1007.0
+offset_bottom = 563.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ehaqw")
+metadata/_edit_lock_ = true
+
+[node name="MusicSlider" parent="Controls" instance=ExtResource("3_h5qk3")]
+
+[node name="HSlider" parent="Controls/MusicSlider" index="0"]
+value = 15.0
+
+[node name="Label" parent="Controls/MusicSlider" index="1"]
+text = "Music"
+
+[node name="SoundSlider" parent="Controls" instance=ExtResource("3_h5qk3")]
+offset_left = -3.0
+offset_top = 156.0
+offset_right = 37.0
+offset_bottom = 196.0
+
+[connection signal="toggled" from="Button" to="." method="_on_button_toggled"]
+[connection signal="change" from="Controls/MusicSlider" to="." method="_on_music_slider_change"]
+[connection signal="change" from="Controls/MusicSlider" to="Controls/MusicSlider" method="_on_change"]
+[connection signal="change" from="Controls/SoundSlider" to="." method="_on_sound_slider_change"]
+
+[editable path="Controls/MusicSlider"]

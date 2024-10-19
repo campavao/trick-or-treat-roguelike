@@ -1,6 +1,8 @@
 extends Node
 class_name CandyClass
 
+const FLOATING_NUMBER = preload('res://floating_number.tscn')
+
 const Candy = Shared.Candy
 const Level = Shared.CandyLevel
 
@@ -24,19 +26,19 @@ func use(target: CharacterBase, all_targets: Array[CharacterBase]):
 	var is_heal = power < 0
 	
 	# Target eats candy
-	target.eat(power)
+	use_eat(power, target)
 
 	# Level effects
 	match (level):
 		Level.KING_SIZE:
 			var random_enemy = get_random_target(all_targets, [target], is_heal)
-			random_enemy.eat(power / 2)
+			use_eat(power / 2, random_enemy)
 		Level.PARTY_SIZE:
 			var random_enemy = get_random_target(all_targets, [target], is_heal)
-			random_enemy.eat(power / 2)
+			use_eat(power / 2, random_enemy)
 			
 			var random_enemy_2 = get_random_target(all_targets, [target, random_enemy], is_heal)
-			random_enemy_2.eat(power / 2)
+			use_eat(power / 2, random_enemy_2)
 
 	# Apply candy special effect
 	match (type):
@@ -70,18 +72,18 @@ func use(target: CharacterBase, all_targets: Array[CharacterBase]):
 					random_enemy_2.daze()
 		Candy.GUMMY_BEARS:
 			print('protecting')
-			target.protect(-power)
+			use_protect(-power, target)
 			
 			match (level):
 				Level.KING_SIZE:
 					var random_enemy = get_random_target(all_targets, [target], is_heal)
-					random_enemy.protect(-power)
+					use_protect(-power, random_enemy)
 				Level.PARTY_SIZE:
 					var random_enemy = get_random_target(all_targets, [target], is_heal)
-					random_enemy.protect(-power)
+					use_protect(-power, random_enemy)
 					
 					var random_enemy_2 = get_random_target(all_targets, [target, random_enemy], is_heal)
-					random_enemy_2.protect(-power)
+					use_protect(-power, random_enemy_2)
 
 		Candy.NERDS_ROPE:
 			target.tie_up()
@@ -107,10 +109,35 @@ func use(target: CharacterBase, all_targets: Array[CharacterBase]):
 					affect_all_enemies(all_targets, power)
 					affect_all_enemies(all_targets, power)
 
+func use_eat(amount, target: CharacterBase):
+	var floating_number = FLOATING_NUMBER.instantiate()
+	floating_number.label = str(abs(amount))
+	
+	if amount < 0:
+		floating_number.label = "+" + floating_number.label
+	else:
+		floating_number.label = "-" + floating_number.label
+
+		
+	floating_number.texture_path = texture_path		
+	
+	target.eat(amount)
+	
+	if target is Player:
+		target.display_node.add_child(floating_number)
+	else:
+		target.add_child(floating_number)
+	
+func use_protect(amount, target):
+	var floating_number = FLOATING_NUMBER.instantiate()
+	floating_number.label = str(amount)
+	floating_number.texture_path = "res://protection_intent.png"
+	target.protect(amount)
+	target.add_child(floating_number)
 
 func affect_all_enemies(all_targets: Array[CharacterBase], power: int):
 	for target in all_targets:
-		target.eat(power)
+		use_eat(power, target)
 		
 func get_random_target(all_targets: Array[CharacterBase], ignore_targets: Array[CharacterBase], is_heal: bool) -> CharacterBase:
 	var valid_targets = all_targets.filter(func (maybe_target):

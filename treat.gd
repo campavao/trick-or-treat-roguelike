@@ -80,6 +80,18 @@ const SIDE_EFFECT_DATA = {
 	},
 }
 
+const VALID_COMBOS = {
+	TREAT_TYPES.INCREASE_MAX_HEALTH: [SIDE_EFFECTS.NONE, SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_HAND_SIZE, SIDE_EFFECTS.DOWNGRADE_CANDY],
+	TREAT_TYPES.INCREASE_HAND_SIZE: [SIDE_EFFECTS.NONE, SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_MAX_HEALTH, SIDE_EFFECTS.DOWNGRADE_CANDY],
+	TREAT_TYPES.UPGRADE_CANDY: [SIDE_EFFECTS.NONE, SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_MAX_HEALTH,SIDE_EFFECTS.DECREASE_MAX_HEALTH, SIDE_EFFECTS.DOWNGRADE_CANDY],
+	TREAT_TYPES.GAIN_SHIELD: [SIDE_EFFECTS.NONE, SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_MAX_HEALTH,SIDE_EFFECTS.DECREASE_MAX_HEALTH, SIDE_EFFECTS.DOWNGRADE_CANDY],
+	TREAT_TYPES.DUPE_CANDY: [SIDE_EFFECTS.NONE, SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_MAX_HEALTH,SIDE_EFFECTS.DECREASE_MAX_HEALTH, SIDE_EFFECTS.DOWNGRADE_CANDY],
+	TREAT_TYPES.MAKE_FIRST_CANDY_ACTIVATE_TWICE: [SIDE_EFFECTS.NONE, SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_MAX_HEALTH,SIDE_EFFECTS.DECREASE_MAX_HEALTH, SIDE_EFFECTS.DOWNGRADE_CANDY],
+	TREAT_TYPES.SKIP_NEXT_HOUSE: [SIDE_EFFECTS.NONE, SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_MAX_HEALTH,SIDE_EFFECTS.DECREASE_MAX_HEALTH, SIDE_EFFECTS.DOWNGRADE_CANDY],
+	TREAT_TYPES.HEAL: [SIDE_EFFECTS.NONE, SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_MAX_HEALTH,SIDE_EFFECTS.DECREASE_MAX_HEALTH, SIDE_EFFECTS.DOWNGRADE_CANDY],
+	TREAT_TYPES.NONE: [SIDE_EFFECTS.TAKE_DAMAGE, SIDE_EFFECTS.TRIGGER_FIGHT, SIDE_EFFECTS.REMOVE_CANDY, SIDE_EFFECTS.DECREASE_MAX_HEALTH,SIDE_EFFECTS.DECREASE_MAX_HEALTH, SIDE_EFFECTS.DOWNGRADE_CANDY],
+}
+
 var options: Array[TreatOption] = []
 var player_ref: Player
 
@@ -89,13 +101,53 @@ var current_side_effect: SIDE_EFFECTS
 func enable(player: Player, type: Shared.HOUSE_TYPE):
 	player_ref = player
 	show()
+	var valid_combos = VALID_COMBOS.keys().duplicate()
 	for i in 3:
-		var random_type = TREAT_TYPES.keys()[randi() % TREAT_TYPES.size()]
-		var random_side_effect = SIDE_EFFECTS.keys()[randi() % SIDE_EFFECTS.size()]
-		var option = TreatOption.new(TREAT_TYPES[random_type], SIDE_EFFECTS[random_side_effect], type == Shared.HOUSE_TYPE.RICH)
+		var valid_type = get_valid_effect(valid_combos)
+		valid_combos.remove_at(valid_combos.find(valid_type))
+		var valid_side_effect = get_valid_side_effect(valid_type, type)
+		var option = TreatOption.new(valid_type, valid_side_effect, type == Shared.HOUSE_TYPE.RICH)
 		options.append(option)
-		$Options.add_item(option.text, null, true)
+		
+		match i:
+			0: $"OptionContainer/Option 1".text = option.text
+			1: $"OptionContainer/Option 2".text = option.text
+			2: $"OptionContainer/Option 3".text = option.text
+		
+func get_valid_effect(valid_combos: Array):
+	var is_all_upgraded = player_ref.basket.all(func (candy): candy.level == Shared.CandyLevel.PARTY_SIZE)
+	if is_all_upgraded:
+		var idx = valid_combos.find(TREAT_TYPES.UPGRADE_CANDY)
+		valid_combos.remove_at(idx)
+		
+	if player_ref.health == player_ref.starting_health:
+		var idx = valid_combos.find(TREAT_TYPES.HEAL)
+		valid_combos.remove_at(idx)
+		
+	return valid_combos.pick_random()
 
+func get_valid_side_effect(type: TREAT_TYPES, house_type: Shared.HOUSE_TYPE):
+	var valid_combo: Array = VALID_COMBOS[type].duplicate()
+	if player_ref.hand_size <= 2:
+		var idx = valid_combo.find(SIDE_EFFECTS.DECREASE_HAND_SIZE)
+		valid_combo.remove_at(idx)
+		
+	var health_safety = 5 if house_type == Shared.HOUSE_TYPE.NORMAL else 10
+	if player_ref.health <= health_safety:
+		var idx = valid_combo.find(SIDE_EFFECTS.DECREASE_MAX_HEALTH)
+		valid_combo.remove_at(idx)
+		
+	var is_downgradable_candy_found = player_ref.basket.find(func (candy): return candy.level != Shared.CandyLevel.FUN_SIZE)
+	if is_downgradable_candy_found:
+		var idx = valid_combo.find(SIDE_EFFECTS.DOWNGRADE_CANDY)
+		valid_combo.remove_at(idx)
+		
+	var is_not_enough_candy = player_ref.basket.size() <= 2
+	if is_not_enough_candy:
+		var idx = valid_combo.find(SIDE_EFFECTS.REMOVE_CANDY)
+		valid_combo.remove_at(idx)
+		
+	return valid_combo.pick_random()
 
 func _on_button_pressed() -> void:
 	hide()
@@ -141,7 +193,7 @@ class TreatOption:
 				text = Shared.proper_case(info_text)
 
 
-func _on_options_item_selected(index: int) -> void:
+func select_option(index: int) -> void:
 	var option: TreatOption = options[index]
 
 	match option.type:
@@ -201,3 +253,15 @@ func get_treat_value(type: TREAT_TYPES, enhanced: bool):
 
 func get_side_effect_value(type: SIDE_EFFECTS, enhanced: bool):
 	return SIDE_EFFECT_DATA[type].value if not enhanced else SIDE_EFFECT_DATA[type].value * 2
+
+
+func _on_option_1_pressed() -> void:
+	select_option(0)
+
+
+func _on_option_2_pressed() -> void:
+	select_option(1)
+
+
+func _on_option_3_pressed() -> void:
+	select_option(2)

@@ -39,6 +39,8 @@ func eat(original_amount: int):
 		amount *= 2
 
 	print(self, ' is eating: ', amount)
+	
+	Signals.emit_signal("play_sound", Shared.SoundType.YUM if amount < 0 else Shared.SoundType.HIT)
 
 	if protection > 0 and amount > 0:
 		protection -= amount
@@ -74,6 +76,7 @@ func protect(amount: int):
 	protection += amount
 
 func heal(amount: int):
+	Signals.emit_signal("play_sound", Shared.SoundType.YUM)
 	health += abs(amount)
 	# Don't overfill health
 	if health > starting_health:

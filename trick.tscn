@@ -6,7 +6,12 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e0l03"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8cu33"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7u6w"]
+bg_color = Color(0.00298718, 0.00133794, 0.000155013, 0.470588)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n4m73"]
 
@@ -41,15 +46,14 @@ offset_bottom = 530.0
 theme_override_constants/separation = 20
 
 [node name="CandyContainer" type="ItemList" parent="."]
-custom_minimum_size = Vector2(64, 0)
-offset_left = 33.0
-offset_top = 162.0
-offset_right = 693.0
-offset_bottom = 323.0
+offset_left = 22.0
+offset_top = 12.0
+offset_right = 694.0
+offset_bottom = 345.0
 theme_override_constants/h_separation = 22
 theme_override_font_sizes/font_size = 18
 theme_override_styles/focus = SubResource("StyleBoxEmpty_e0l03")
-theme_override_styles/panel = SubResource("StyleBoxEmpty_8cu33")
+theme_override_styles/panel = SubResource("StyleBoxFlat_q7u6w")
 allow_search = false
 max_text_lines = 2
 text_overrun_behavior = 0
@@ -103,5 +107,6 @@ fixed_icon_size = Vector2i(32, 64)
 
 [connection signal="pressed" from="Done" to="." method="_on_done_pressed"]
 [connection signal="pressed" from="Player" to="." method="_on_player_pressed"]
+[connection signal="item_selected" from="CandyContainer" to="." method="_on_candy_container_item_selected"]
 [connection signal="pressed" from="RewardContainer/Complete Button" to="." method="_on_button_pressed"]
 [connection signal="item_selected" from="RewardContainer/CandyPicker" to="." method="_on_candy_picker_item_selected"]

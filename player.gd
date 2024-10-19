@@ -11,6 +11,8 @@ var use_first_candy_twice := false
 var skip_next_house := false
 var start_turn_shield_amount := 0
 
+var display_node
+
 func _init(state) -> void:
 	character = state["character"]
 	set_starting_health(20)

@@ -86,10 +86,7 @@ func _on_first_neighborhood_friends_house_selected() -> void:
 	$"First Neighborhood".hide()
 
 func _on_first_neighborhood_boss_selected() -> void:
-	$Trick.base_health = 40
-	$Trick.enable(player, Shared.HOUSE_TYPE.BOSS, 1, 1)
-
-	# $Boss.enable(player)
+	$Boss.enable(player)
 	$"First Neighborhood".hide()
 
 func _process(_delta):
@@ -102,8 +99,9 @@ func _process(_delta):
 		$Basket.hide()
 
 func get_trick_or_treat() -> HouseType:
-	var last_three = trick_or_treat_tracker.slice(0, 3)
-	if last_three.size() == 3:
+	var size = 2
+	var last_three = trick_or_treat_tracker.slice(0, size)
+	if last_three.size() == size:
 		var first = last_three.front()
 		var is_all_same = last_three.all(func(element): return element == first)
 		if is_all_same:
@@ -124,7 +122,6 @@ func get_trick_or_treat() -> HouseType:
 	return HouseType.Treat
 
 
-
 func _on_treat_trigger_fight(type: Shared.HOUSE_TYPE) -> void:
 	$"First Neighborhood".hide()
 	enable_trick(type)
@@ -136,3 +133,10 @@ func enable_trick(type: Shared.HOUSE_TYPE):
 	var max_amount_of_enemies = 4 if medium else 3 if easy else 2
 	var difficulty_multiplier = 2 if medium else 1
 	$Trick.enable(player, type, max_amount_of_enemies, difficulty_multiplier, !houses_beaten.has('house_2'))
+
+
+func _on_boss_start() -> void:
+	enable_trick(Shared.HOUSE_TYPE.BOSS)
+
+func _on_boss_end_early() -> void:
+	$Finish.enable(true, player.character)
