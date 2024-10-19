@@ -15,14 +15,14 @@
 script = ExtResource("1_3kgx8")
 
 [node name="TreatBackground" type="Sprite2D" parent="."]
-position = Vector2(571, 324)
+position = Vector2(580.5, 324)
+scale = Vector2(1.01664, 1)
 texture = ExtResource("2_xkb3u")
-metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="."]
-offset_left = 449.0
+offset_left = 454.0
 offset_top = 186.0
-offset_right = 689.0
+offset_right = 694.0
 offset_bottom = 230.0
 theme_override_font_sizes/font_size = 42
 text = "Pick a treat"
@@ -55,7 +55,7 @@ icon_mode = 0
 
 [node name="OptionContainer" type="VBoxContainer" parent="."]
 offset_top = 265.0
-offset_right = 1142.0
+offset_right = 1161.0
 offset_bottom = 505.0
 theme_override_constants/separation = 24
 alignment = 1

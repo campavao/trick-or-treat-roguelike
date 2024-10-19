@@ -22,8 +22,8 @@ Signals="*res://signals.gd"
 
 [display]
 
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_height"
 
 [gui]
 

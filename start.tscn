@@ -12,9 +12,9 @@
 script = ExtResource("1_xh2gb")
 
 [node name="StartBackground" type="Sprite2D" parent="."]
-position = Vector2(571, 324)
+position = Vector2(577.856, 322.5)
+scale = Vector2(1.01251, 1.00463)
 texture = ExtResource("2_1sks8")
-metadata/_edit_lock_ = true
 
 [node name="Title" type="Label" parent="."]
 offset_left = 392.0
@@ -34,9 +34,8 @@ horizontal_alignment = 1
 [node name="CharacterSelect" type="Node2D" parent="."]
 
 [node name="CharacterContainer" type="HBoxContainer" parent="CharacterSelect"]
-offset_left = -1.0
 offset_top = 247.0
-offset_right = 1152.0
+offset_right = 1153.0
 offset_bottom = 647.0
 alignment = 1
 
